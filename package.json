@@ -1,5 +1,5 @@
 {
-  "name": "uhd_kr/vanilla-state",
+  "name": "@uhd_kr/vanilla-state",
   "version": "1.0.0",
   "description": "A lightweight state management solution in vanilla JavaScript for modern web applications with proxy-based reactivity",
   "main": "dist/vanilla-state.cjs.js",

@@ -1,0 +1,58 @@
+{
+  "name": "vanilla-state",
+  "version": "1.0.0",
+  "description": "A lightweight state management solution in vanilla JavaScript for modern web applications with proxy-based reactivity",
+  "main": "dist/vanilla-state.cjs.js",
+  "module": "dist/vanilla-state.esm.js",
+  "browser": "dist/vanilla-state.min.js",
+  "unpkg": "dist/vanilla-state.min.js",
+  "type": "module",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "prepare": "npm run build",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean"
+  },
+  "keywords": [
+    "state-management",
+    "vanilla-js",
+    "javascript",
+    "state",
+    "usestate",
+    "react",
+    "nextjs",
+    "events",
+    "proxy",
+    "reactive",
+    "frontend",
+    "lightweight",
+    "zero-dependency"
+  ],
+  "author": {
+    "name": "Hwanyong Yoo(UHD)",
+    "url": "https://github.com/hwanyong"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hwanyong/vanilla-state.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hwanyong/vanilla-state/issues"
+  },
+  "homepage": "https://github.com/hwanyong/vanilla-state#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "latest",
+    "rollup": "latest"
+  },
+  "sideEffects": false
+}

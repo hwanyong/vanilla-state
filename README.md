@@ -4,40 +4,29 @@
 
 [English](README.md) | [한국어](README.ko.md)
 
-[![npm version](https://badge.fury.io/js/vanilla-state.svg)](https://badge.fury.io/js/vanilla-state)
+[![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-## Features
-
-- 🪶 Lightweight (less than 1KB minified + gzipped)
-- 🚫 Zero dependencies
-- 🎯 Simple and intuitive API
-- 🔄 Proxy-based reactivity
-- 📦 Multiple distribution formats (ESM, UMD, CommonJS)
-- 🌐 Works in all modern browsers
-- ⚡ High performance
-- 🛡️ TypeScript friendly
 
 ## Installation
 
 ### 1. NPM
 ```bash
-npm install vanilla-state
+npm install @uhd_kr/vanilla-state
 ```
 
 ```javascript
-import VnlState from 'vanilla-state';
+import VnlState from '@uhd_kr/vanilla-state';
 ```
 
 ### 2. CDN
 ```html
 <!-- Modern browsers (recommended) -->
 <script type="module">
-  import VnlState from 'https://unpkg.com/vanilla-state/dist/vanilla-state.esm.js';
+  import VnlState from 'https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.esm.js';
 </script>
 
 <!-- Traditional script tag -->
-<script src="https://unpkg.com/vanilla-state"></script>
+<script src="https://unpkg.com/@uhd_kr/vanilla-state"></script>
 ```
 
 ### 3. Direct Download

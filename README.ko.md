@@ -4,40 +4,29 @@
 
 [English](README.md) | 한국어
 
-[![npm version](https://badge.fury.io/js/vanilla-state.svg)](https://badge.fury.io/js/vanilla-state)
+[![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-## 특징
-
-- 🪶 매우 가벼움 (압축 후 1KB 미만)
-- 🚫 외부 의존성 없음
-- 🎯 직관적이고 간단한 API
-- 🔄 프록시 기반 반응형 구현
-- 📦 다양한 배포 형식 지원 (ESM, UMD, CommonJS)
-- 🌐 모든 최신 브라우저 지원
-- ⚡ 고성능
-- 🛡️ TypeScript 친화적
 
 ## 설치 방법
 
 ### 1. NPM 사용
 ```bash
-npm install vanilla-state
+npm install @uhd_kr/vanilla-state
 ```
 
 ```javascript
-import VnlState from 'vanilla-state';
+import VnlState from '@uhd_kr/vanilla-state';
 ```
 
 ### 2. CDN 사용
 ```html
 <!-- 모던 브라우저 (권장) -->
 <script type="module">
-  import VnlState from 'https://unpkg.com/vanilla-state/dist/vanilla-state.esm.js';
+  import VnlState from 'https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.esm.js';
 </script>
 
 <!-- 전통적인 스크립트 태그 -->
-<script src="https://unpkg.com/vanilla-state"></script>
+<script src="https://unpkg.com/@uhd_kr/vanilla-state"></script>
 ```
 
 ### 3. 직접 다운로드

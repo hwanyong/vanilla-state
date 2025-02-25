@@ -48,7 +48,26 @@ git push origin main
 
 ## Required Environment Variables
 
-- `NPM_TOKEN`: Access token for NPM deployment
+### NPM Token Setup
+
+1. Generate NPM Access Token:
+   - Go to npmjs.com and navigate to Access Tokens
+   - Click "Generate New Token"
+   - Select "Automation" token type
+   - Generate and copy the token
+
+2. Configure GitHub Secrets:
+   - Go to your GitHub repository (vanilla-state)
+   - Navigate to Settings > Secrets and variables > Actions
+   - Click "New repository secret"
+   - Name: `NPM_TOKEN`
+   - Value: Paste your NPM token
+   - Click "Add secret"
+
+This setup allows GitHub Actions to authenticate with NPM during the deployment process.
+
+### Environment Variables List
+- `NPM_TOKEN`: Access token for NPM deployment (see setup above)
 - `GITHUB_TOKEN`: Automatically provided by GitHub Actions
 
 ## Pre-deployment Checklist

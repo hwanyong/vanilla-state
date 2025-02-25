@@ -1,17 +1,30 @@
 # Vanilla State
 
-🚀 A lightweight, proxy-based state management solution in vanilla JavaScript with zero dependencies. Perfect for modern web applications looking for a simple yet powerful state management solution.
+🚀 A lightweight, proxy-based state management solution in vanilla JavaScript/TypeScript with zero dependencies. Perfect for modern web applications looking for a simple yet powerful state management solution.
 
 [English](README.md) | [한국어](README.ko.md)
 
 [![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Features
+
+- 🚀 Lightweight and Zero Dependencies
+- 🔄 Proxy-based Reactivity
+- 📦 TypeScript Support
+- 🎯 Event-based State Updates
+- 💡 Simple and Intuitive API
+- 📱 Browser and Node.js Support
+
 ## Installation
 
 ### 1. NPM
 ```bash
 npm install @uhd_kr/vanilla-state
+# or
+yarn add @uhd_kr/vanilla-state
+# or
+pnpm add @uhd_kr/vanilla-state
 ```
 
 ```javascript
@@ -37,20 +50,35 @@ Download from the `dist` folder:
 
 ## Usage
 
-### Basic Usage
+### JavaScript
+
 ```javascript
+import VnlState from '@uhd_kr/vanilla-state';
+
 const state = new VnlState();
 
-// Set initial state
-state.count = 0;
-
-// Add listener
-state.addEventListener('count', (newValue) => {
-  console.log('Count changed to:', newValue);
+// Add state listener
+state.addEventListener('count', (value) => {
+  console.log('Count changed:', value);
 });
 
-// Update state (triggers listener)
-state.count = 1; // Console: "Count changed to: 1"
+// Update state
+state.count = 1; // logs: Count changed: 1
+```
+
+### TypeScript
+
+```typescript
+import VnlState from '@uhd_kr/vanilla-state';
+
+const state = new VnlState();
+
+// Type-safe event listener
+state.addEventListener<number>('count', (value) => {
+  console.log('Count changed:', value.toFixed(0));
+});
+
+state.count = 1; // logs: Count changed: 1
 ```
 
 ### Advanced Usage

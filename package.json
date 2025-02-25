@@ -1,6 +1,6 @@
 {
   "name": "@uhd_kr/vanilla-state",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A lightweight state management solution in vanilla JavaScript for modern web applications with proxy-based reactivity",
   "main": "dist/vanilla-state.cjs.js",
   "module": "dist/vanilla-state.esm.js",
@@ -28,7 +28,9 @@
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "typecheck": "tsc --noEmit",
-    "build:types": "tsc --emitDeclarationOnly"
+    "build:types": "tsc --emitDeclarationOnly",
+    "format": "prettier --write \"src/**/*.{js,ts}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts}\""
   },
   "keywords": [
     "state-management",
@@ -65,6 +67,7 @@
     "@rollup/plugin-terser": "latest",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.13.5",
+    "prettier": "^3.5.2",
     "rollup": "latest",
     "tslib": "^2.8.1",
     "typescript": "^5.7.3"

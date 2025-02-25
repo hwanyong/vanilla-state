@@ -16,7 +16,7 @@ class VnlState {
                     target._setState(prop, value, true);
                 }
                 return true;
-            }
+            },
         });
     }
     addEventListener(prop, callback) {
@@ -35,7 +35,7 @@ class VnlState {
     }
     _notify(prop) {
         if (this._listeners[prop]) {
-            this._listeners[prop].forEach(callback => callback(this._state[prop]));
+            this._listeners[prop].forEach((callback) => callback(this._state[prop]));
         }
     }
     _setState(prop, value, notify = true) {

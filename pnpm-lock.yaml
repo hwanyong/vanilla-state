@@ -17,6 +17,9 @@ importers:
       '@types/node':
         specifier: ^22.13.5
         version: 22.13.5
+      prettier:
+        specifier: ^3.5.2
+        version: 3.5.2
       rollup:
         specifier: latest
         version: 4.34.8
@@ -219,6 +222,11 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
+  prettier@3.5.2:
+    resolution: {integrity: sha512-lc6npv5PH7hVqozBR7lkBNOGXV9vMwROAPlumdBkX0wTbbzPu/U1hk5yL8p2pt4Xoc+2mkT8t/sow2YrV/M5qg==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
@@ -404,6 +412,8 @@ snapshots:
   path-parse@1.0.7: {}
 
   picomatch@4.0.2: {}
+
+  prettier@3.5.2: {}
 
   randombytes@2.1.0:
     dependencies:

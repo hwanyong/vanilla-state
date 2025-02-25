@@ -50,6 +50,17 @@ permissions:
 
 워크플로우에서는 `${{ secrets.GITHUB_TOKEN }}`로 이 토큰을 사용할 수 있습니다.
 
+### GitHub Actions 권한 설정
+
+1. GitHub 저장소의 Settings로 이동
+2. Actions > General 메뉴로 이동
+3. "Workflow permissions" 섹션에서:
+   - "Read and write permissions" 선택
+   - "Allow GitHub Actions to create and approve pull requests" 체크박스 활성화
+4. Save 버튼 클릭
+
+이 설정은 자동화된 배포 프로세스가 풀 리퀘스트를 생성하기 위해 필요합니다.
+
 ### 환경 변수 목록
 - `NPM_TOKEN`: NPM 배포를 위한 액세스 토큰 (수동 설정 필요)
 - `GITHUB_TOKEN`: GitHub Actions에서 자동 제공 (설정 불필요)

@@ -86,6 +86,17 @@ permissions:
 
 You can access this token in your workflow using: `${{ secrets.GITHUB_TOKEN }}`
 
+### GitHub Actions Permissions Setup
+
+1. Go to your GitHub repository's Settings
+2. Navigate to Actions > General
+3. Under "Workflow permissions":
+   - Select "Read and write permissions"
+   - Check "Allow GitHub Actions to create and approve pull requests"
+4. Click Save
+
+This configuration is required for the automated release process to create pull requests.
+
 ### Environment Variables List
 - `NPM_TOKEN`: Access token for NPM deployment (requires manual setup)
 - `GITHUB_TOKEN`: Automatically provided by GitHub Actions (no setup needed)

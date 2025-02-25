@@ -113,6 +113,39 @@ state.addEventListener('user', user => {
 state.user = { ...state.user, age: 26 };
 ```
 
+## Development
+
+### Prerequisites
+- Node.js >= 14
+- pnpm (recommended) or npm
+
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/hwanyong/vanilla-state.git
+
+# Install dependencies
+pnpm install
+
+# Build the package
+pnpm build
+```
+
+### Scripts
+- `pnpm build`: Build the package
+- `pnpm typecheck`: Run TypeScript type checking
+- `pnpm format`: Format code with Prettier
+- `pnpm changeset`: Create a new changeset
+- `pnpm release`: Publish to npm
+
+For more detailed development guidelines, see our [Contributing Guide](CONTRIBUTING.md).
+
+## Documentation
+
+- [Migration Guide](docs/MIGRATION.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
+- [Changelog](docs/CHANGELOG.md)
+
 ## Best Practices
 
 1. **Listener Cleanup**: Always remove listeners when they're no longer needed to prevent memory leaks.
@@ -142,7 +175,17 @@ state.loading = false; // Only this update triggers listeners
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Process
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Add tests if applicable
+5. Create a changeset (`pnpm changeset`)
+6. Submit a pull request
+
+For more information about deploying new versions, see our [Deployment Guide](docs/DEPLOYMENT.md).
 
 ## License
 

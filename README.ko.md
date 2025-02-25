@@ -7,6 +7,15 @@
 [![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## 주요 기능
+
+- 🚀 가벼운 크기와 제로 의존성
+- 🔄 프록시 기반 반응형 상태 관리
+- 📦 TypeScript 지원
+- 🎯 이벤트 기반 상태 업데이트
+- 💡 간단하고 직관적인 API
+- 📱 브라우저와 Node.js 지원
+
 ## 설치 방법
 
 ### 1. NPM 사용
@@ -37,20 +46,35 @@ import VnlState from '@uhd_kr/vanilla-state';
 
 ## 사용 방법
 
-### 기본 사용법
+### JavaScript
+
 ```javascript
+import VnlState from '@uhd_kr/vanilla-state';
+
 const state = new VnlState();
 
-// 초기 상태 설정
-state.count = 0;
-
-// 리스너 추가
-state.addEventListener('count', (newValue) => {
-  console.log('카운트가 변경됨:', newValue);
+// 상태 리스너 추가
+state.addEventListener('count', (value) => {
+  console.log('카운트 변경:', value);
 });
 
-// 상태 업데이트 (리스너 실행)
-state.count = 1; // 콘솔: "카운트가 변경됨: 1"
+// 상태 업데이트
+state.count = 1; // 출력: 카운트 변경: 1
+```
+
+### TypeScript
+
+```typescript
+import VnlState from '@uhd_kr/vanilla-state';
+
+const state = new VnlState();
+
+// 타입 안전한 이벤트 리스너
+state.addEventListener<number>('count', (value) => {
+  console.log('카운트 변경:', value.toFixed(0));
+});
+
+state.count = 1; // 출력: 카운트 변경: 1
 ```
 
 ### 고급 사용법
@@ -105,6 +129,39 @@ state.setWithoutNotify('data', newData);
 state.loading = false; // 이 업데이트만 리스너 실행
 ```
 
+## 개발
+
+### 필수 요구사항
+- Node.js >= 14
+- pnpm (권장) 또는 npm
+
+### 설치
+```bash
+# 저장소 복제
+git clone https://github.com/hwanyong/vanilla-state.git
+
+# 의존성 설치
+pnpm install
+
+# 패키지 빌드
+pnpm build
+```
+
+### 스크립트
+- `pnpm build`: 패키지 빌드
+- `pnpm typecheck`: TypeScript 타입 체크 실행
+- `pnpm format`: Prettier로 코드 포맷팅
+- `pnpm changeset`: 새 changeset 생성
+- `pnpm release`: npm에 배포
+
+자세한 개발 가이드는 [기여 가이드](CONTRIBUTING.md)를 참조하세요.
+
+## 문서
+
+- [마이그레이션 가이드](docs/MIGRATION.md)
+- [배포 가이드](docs/DEPLOYMENT.md)
+- [변경 이력](docs/CHANGELOG.md)
+
 ## 브라우저 지원
 
 - Chrome/Edge (최신 버전)
@@ -114,7 +171,17 @@ state.loading = false; // 이 업데이트만 리스너 실행
 
 ## 기여하기
 
-기여는 언제나 환영합니다! Pull Request를 자유롭게 제출해 주세요.
+기여는 언제나 환영합니다! 자세한 내용은 [기여 가이드](CONTRIBUTING.md)를 참조하세요.
+
+### 개발 프로세스
+1. 저장소 포크
+2. 새 브랜치 생성
+3. 변경사항 작업
+4. 필요한 경우 테스트 추가
+5. changeset 생성 (`pnpm changeset`)
+6. 풀 리퀘스트 제출
+
+새 버전 배포에 대한 자세한 내용은 [배포 가이드](docs/DEPLOYMENT.md)를 참조하세요.
 
 ## 라이선스
 

@@ -6,7 +6,16 @@
   "module": "dist/vanilla-state.esm.js",
   "browser": "dist/vanilla-state.min.js",
   "unpkg": "dist/vanilla-state.min.js",
+  "types": "dist/types/vanilla-state.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types/vanilla-state.d.ts",
+      "import": "./dist/vanilla-state.esm.js",
+      "require": "./dist/vanilla-state.cjs.js",
+      "default": "./dist/vanilla-state.min.js"
+    }
+  },
   "files": [
     "dist",
     "src",
@@ -17,7 +26,9 @@
     "build": "rollup -c",
     "prepare": "npm run build",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean"
+    "prebuild": "npm run clean",
+    "typecheck": "tsc --noEmit",
+    "build:types": "tsc --emitDeclarationOnly"
   },
   "keywords": [
     "state-management",
@@ -52,7 +63,11 @@
   },
   "devDependencies": {
     "@rollup/plugin-terser": "latest",
-    "rollup": "latest"
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^22.13.5",
+    "rollup": "latest",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3"
   },
   "sideEffects": false
 }

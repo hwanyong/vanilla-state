@@ -1,6 +1,6 @@
 {
   "name": "@uhd_kr/vanilla-state",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A lightweight state management solution in vanilla JavaScript for modern web applications with proxy-based reactivity",
   "main": "dist/vanilla-state.cjs.js",
   "module": "dist/vanilla-state.esm.js",

@@ -13,7 +13,8 @@ permissions:
   actions: write
   statuses: write
   checks: write
-  workflows: write
+  deployments: write
+  id-token: write
   discussions: write
 
 jobs:

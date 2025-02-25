@@ -66,9 +66,29 @@ git push origin main
 
 This setup allows GitHub Actions to authenticate with NPM during the deployment process.
 
+### GitHub Token
+`GITHUB_TOKEN` is automatically provided by GitHub Actions - you don't need to create or configure it manually. This token is created automatically when GitHub Actions runs and has the necessary permissions based on your workflow permissions settings.
+
+The token permissions are configured in the workflow file under the `permissions` section:
+```yaml
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+  issues: write
+  actions: write
+  statuses: write
+  checks: write
+  deployments: write
+  id-token: write
+  discussions: write
+```
+
+You can access this token in your workflow using: `${{ secrets.GITHUB_TOKEN }}`
+
 ### Environment Variables List
-- `NPM_TOKEN`: Access token for NPM deployment (see setup above)
-- `GITHUB_TOKEN`: Automatically provided by GitHub Actions
+- `NPM_TOKEN`: Access token for NPM deployment (requires manual setup)
+- `GITHUB_TOKEN`: Automatically provided by GitHub Actions (no setup needed)
 
 ## Pre-deployment Checklist
 

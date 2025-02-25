@@ -30,8 +30,28 @@
 
 이 설정을 통해 GitHub Actions가 배포 과정에서 NPM 인증을 수행할 수 있습니다.
 
+### GitHub 토큰
+`GITHUB_TOKEN`은 GitHub Actions가 자동으로 제공하는 토큰이므로 별도로 생성하거나 설정할 필요가 없습니다. 이 토큰은 GitHub Actions가 실행될 때 자동으로 생성되며, 워크플로우의 권한 설정에 따라 필요한 권한을 가지게 됩니다.
+
+토큰 권한은 워크플로우 파일의 `permissions` 섹션에서 구성됩니다:
+```yaml
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+  issues: write
+  actions: write
+  statuses: write
+  checks: write
+  deployments: write
+  id-token: write
+  discussions: write
+```
+
+워크플로우에서는 `${{ secrets.GITHUB_TOKEN }}`로 이 토큰을 사용할 수 있습니다.
+
 ### 환경 변수 목록
-- `NPM_TOKEN`: NPM 배포를 위한 액세스 토큰 (위 설정 참조)
-- `GITHUB_TOKEN`: GitHub Actions에서 자동으로 제공
+- `NPM_TOKEN`: NPM 배포를 위한 액세스 토큰 (수동 설정 필요)
+- `GITHUB_TOKEN`: GitHub Actions에서 자동 제공 (설정 불필요)
 
 // ...existing code...

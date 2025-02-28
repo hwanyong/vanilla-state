@@ -28,6 +28,21 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # (디버깅) 환경변수 확인
+      - name: Verify environment variables
+        run: |
+          # Check if VAR is defined
+          if [ -n "${VAR+x}" ]; then
+            # VAR is defined; now check if its value is empty
+            if [ -z "$VAR" ]; then
+              echo "VAR is defined but empty."
+            else
+              echo "VAR is defined and has a value."
+            fi
+          else
+            echo "VAR is not defined at all."
+          fi
+
       - name: Verify NPM_TOKEN is set
         run: |
           if [ -z "$NPM_TOKEN" ]; then

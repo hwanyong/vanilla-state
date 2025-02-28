@@ -21,6 +21,12 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure npm scope registry
+        run: echo "@uhd_kr:registry=https://registry.npmjs.org/" >> .npmrc
+      - name: Configure npm authentication
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Checkout code
         uses: actions/checkout@v3
         with:

@@ -21,12 +21,18 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Remove existing .npmrc if exists
+        run: rm -f .npmrc
       - name: Configure npm scope registry
         run: echo "@uhd_kr:registry=https://registry.npmjs.org/" >> .npmrc
       - name: Configure npm authentication
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: List files in project root
+        run: ls -la
+      - name: Display .npmrc content with masked token
+        run: cat .npmrc | sed -E 's/(\/\/registry\.npmjs\.org\/:_authToken=).*/\1***hidden***/'
       - name: Checkout code
         uses: actions/checkout@v3
         with:

@@ -32,9 +32,9 @@ jobs:
       - name: Verify environment variables
         run: |
           # Check if VAR is defined
-          if [ -n "${VAR+x}" ]; then
+          if [ -n "$NPM_TOKEN" ]; then
             # VAR is defined; now check if its value is empty
-            if [ -z "$VAR" ]; then
+            if [ -z "$NPM_TOKEN" ]; then
               echo "VAR is defined but empty."
             else
               echo "VAR is defined and has a value."
@@ -42,6 +42,8 @@ jobs:
           else
             echo "VAR is not defined at all."
           fi
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Verify NPM_TOKEN is set
         run: |

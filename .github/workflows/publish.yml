@@ -28,6 +28,17 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify NODE_AUTH_TOKEN is set
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "NODE_AUTH_TOKEN is empty"
+            exit 1
+          else
+            echo "NODE_AUTH_TOKEN is set"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       # 2) .npmrc가 레포에 있다면 우선 삭제
       - name: Remove existing .npmrc if exists
         run: rm -f .npmrc

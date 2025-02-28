@@ -46,10 +46,10 @@
       // state.info.name = data.get('name')
 
       state.batch((s) => {
-        s.count = 1;
-        s.info.name = data.get('name');
-        s.info.version = "2.0.0";
-        s.info.description = "Updated description";
+        s.count = 1
+        s.info.name = data.get('name')
+        s.info.version = data.get('version')
+        s.info.description = data.get('description')
       });
     })
 

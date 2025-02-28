@@ -85,6 +85,18 @@ state.count = 1; // 출력: 카운트 변경: 1
 state.setWithoutNotify('count', 2);
 ```
 
+#### 일괄 업데이트
+여러 상태 업데이트를 그룹화하고 마지막에 리스너를 한 번만 실행:
+```javascript
+state.batch((s) => {
+  s.count = 1;
+  s.loading = true;
+  s.user.name = "홍길동";
+  s.user.role = "관리자";
+});
+// 모든 업데이트가 완료된 후 리스너가 한 번만 실행됨
+```
+
 #### 다중 리스너
 ```javascript
 // 여러 리스너 추가

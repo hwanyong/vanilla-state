@@ -65,6 +65,31 @@ class VnlState {
 	setWithoutNotify<T>(prop: string, value: T): void {
 		this._setState(prop, value, false);
 	}
+
+	batch(callback: (state: VnlState) => void): void {
+		// Create a temporary proxy that doesn't notify on changes
+		const batchProxy = new Proxy(this, {
+			set: (target: VnlState, prop: string, value: any) => {
+				if (prop in target && typeof target[prop] !== 'function') {
+					target[prop] = value;
+				} else {
+					target.setWithoutNotify(prop, value);
+				}
+				return true;
+			}
+		});
+
+		// Apply all changes without notifications
+		callback(batchProxy);
+
+		// Collect all changed properties to notify after batch
+		const changedProps = new Set<string>(Object.keys(this._state));
+
+		// Notify all listeners for changed properties
+		changedProps.forEach(prop => {
+			this._notify(prop);
+		});
+	}
 }
 
 export default VnlState;

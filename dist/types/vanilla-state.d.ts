@@ -9,5 +9,6 @@ declare class VnlState {
     private _notify;
     private _setState;
     setWithoutNotify<T>(prop: string, value: T): void;
+    batch(callback: (state: VnlState) => void): void;
 }
 export default VnlState;

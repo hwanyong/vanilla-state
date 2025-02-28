@@ -89,6 +89,18 @@ Update state without triggering listeners:
 state.setWithoutNotify('count', 2);
 ```
 
+#### Batch Updates
+Group multiple state updates and trigger listeners only once at the end:
+```javascript
+state.batch((s) => {
+  s.count = 1;
+  s.loading = true;
+  s.user.name = "John";
+  s.user.role = "Admin";
+});
+// All listeners will be notified only once after all updates are complete
+```
+
 #### Multiple Listeners
 ```javascript
 // Add multiple listeners

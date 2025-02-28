@@ -33,12 +33,11 @@ jobs:
         run: rm -f .npmrc
 
       # 3) 스코프 설정 (스코프가 @uhd_kr이면 반드시 적어줘야 합니다)
-      - name: Configure npm scope registry
-        run: echo "@uhd_kr:registry=https://registry.npmjs.org/" >> .npmrc
-
       # 4) npm 인증 토큰 설정
-      - name: Configure npm authentication
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+      - name: Configure npmrc in $HOME
+        run: |
+          echo "@uhd_kr:registry=https://registry.npmjs.org/" > $HOME/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -47,8 +46,8 @@ jobs:
         run: ls -la
 
       # (디버깅) .npmrc 내용을 확인하되, 토큰은 마스킹
-      - name: Display .npmrc content with masked token
-        run: cat .npmrc | sed -E 's/(\/\/registry\.npmjs\.org\/:_authToken=).*/\1***hidden***/'
+      - name: Display .npmrc content with masked token (debug)
+        run: cat $HOME/.npmrc | sed -E 's/(\/\/registry\.npmjs\.org\/:_authToken=).*/\1***hidden***/'
 
       # 5) GitHub Packages를 쓰는 경우(필요 없다면 제거 가능)
       - name: Setup Node.js for GitHub

@@ -21,24 +21,36 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove existing .npmrc if exists
-        run: rm -f .npmrc
-      - name: Configure npm scope registry
-        run: echo "@uhd_kr:registry=https://registry.npmjs.org/" >> .npmrc
-      - name: Configure npm authentication
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: List files in project root
-        run: ls -la
-      - name: Display .npmrc content with masked token
-        run: cat .npmrc | sed -E 's/(\/\/registry\.npmjs\.org\/:_authToken=).*/\1***hidden***/'
+      # 1) 먼저 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # 2) .npmrc가 레포에 있다면 우선 삭제
+      - name: Remove existing .npmrc if exists
+        run: rm -f .npmrc
+
+      # 3) 스코프 설정 (스코프가 @uhd_kr이면 반드시 적어줘야 합니다)
+      - name: Configure npm scope registry
+        run: echo "@uhd_kr:registry=https://registry.npmjs.org/" >> .npmrc
+
+      # 4) npm 인증 토큰 설정
+      - name: Configure npm authentication
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # (디버깅) 현재 디렉토리 파일 목록 확인
+      - name: List files in project root
+        run: ls -la
+
+      # (디버깅) .npmrc 내용을 확인하되, 토큰은 마스킹
+      - name: Display .npmrc content with masked token
+        run: cat .npmrc | sed -E 's/(\/\/registry\.npmjs\.org\/:_authToken=).*/\1***hidden***/'
+
+      # 5) GitHub Packages를 쓰는 경우(필요 없다면 제거 가능)
       - name: Setup Node.js for GitHub
         uses: actions/setup-node@v3
         with:
@@ -46,17 +58,20 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@hwanyong'
 
+      # 6) pnpm 설치
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-          run_install: true  # Ensure pnpm installs dependencies at this step
+          run_install: false
 
+      # 7) pnpm 캐시 디렉토리 추출
       - name: Get pnpm store directory
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
+      # 8) pnpm 캐시 설정
       - name: Setup pnpm cache
         uses: actions/cache@v3
         with:
@@ -65,12 +80,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      # 9) 의존성 설치
       - name: Install dependencies
         run: pnpm install
 
+      # 10) 빌드
       - name: Build
         run: pnpm build
 
+      # 11) npmjs.org 레지스트리 사용을 위한 Node 설정
       - name: Setup Node.js for NPM
         uses: actions/setup-node@v3
         with:
@@ -78,6 +96,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: '@uhd_kr'
 
+      # 12) changesets/action을 통해 PR 생성 또는 npm Publish
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1

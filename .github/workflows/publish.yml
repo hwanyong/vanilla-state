@@ -38,7 +38,7 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
-          run_install: false
+          run_install: true  # Ensure pnpm installs dependencies at this step
 
       - name: Get pnpm store directory
         shell: bash

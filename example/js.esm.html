@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Example</title>
+  <script type="module" src="../dist/vanilla-state.esm.js"></script>
+  <script type="module">
+    import VnlState from '../dist/vanilla-state.esm.js'
+
+    const state = new VnlState()
+
+    state.count = 0;
+    state.addEventListener('count', (e) => {
+      console.log('count changed to', e)
+    })
+
+    state.info = {
+      name: 'Vanilla State',
+      version: '1.0.0',
+      description: 'A simple state management library'
+    }
+
+    state.addEventListener('info', (e) => {
+      console.log('info changed to', e)
+    })
+    state.addEventListener('info.name', (e) => {
+      console.log('info.name changed to', e)
+    })
+    state.addEventListener('info.version', (e) => {
+      console.log('info.version changed to', e)
+    })
+    state.addEventListener('info.description', (e) => {
+      console.log('info.description changed to', e)
+    })
+
+    const form = document.querySelector('form')
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      console.log('form submitted')
+
+      const data = new FormData(form)
+
+      // state.info.name = data.get('name')
+
+      state.batch((s) => {
+        s.count = 1;
+        s.info.name = data.get('name');
+        s.info.version = "2.0.0";
+        s.info.description = "Updated description";
+      });
+    })
+
+    document.getElementById('increment').addEventListener('click', () => state.count++)
+    document.getElementById('decrement').addEventListener('click', () => state.count--)
+  </script>
+</head>
+<body>
+  <h1>Check the console</h1>
+
+  <button id="increment">Increment</button>
+  <button id="decrement">Decrement</button>
+
+  <form>
+    <input type="text" name="name" value="Vanilla State">
+    <input type="text" name="version" value="1.0.0">
+    <input type="text" name="description" value="A simple state management library">
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

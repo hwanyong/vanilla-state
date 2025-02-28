@@ -34,7 +34,7 @@ jobs:
             echo "NPM_TOKEN is empty"
             exit 1
           else
-            echo "NPM_TOKEN is set, length: ${#NPM_TOKEN}"
+            echo "NPM_TOKEN is set, length: ${NPM_TOKEN}"
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

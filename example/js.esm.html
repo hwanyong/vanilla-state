@@ -8,48 +8,99 @@
   <script type="module">
     import VnlState from '../dist/vanilla-state.esm.js'
 
-    // Using the constructor with primitive value (type 2)
-    const count = new VnlState(0)
+    // 1. Setting explicit namespace
+    const count = new VnlState(0, { namespace: 'counter' })
 
-    // Using the constructor with initial object state (type 1)
+    // 2. Auto-generated namespace (debug mode)
+    const autoState = new VnlState({
+      name: 'Auto Namespace Example',
+      active: true
+    }, { debug: true }) // Enable debug mode, auto-generate namespace
+
+    // 3. Individual primitive states - auto namespace
     const state = {
-      name: new VnlState('Vanilla State'),
-      version: new VnlState('1.0.0'),
-      description: new VnlState('A simple state management library')
+      name: new VnlState('Vanilla State'),  // Auto namespace
+      version: new VnlState('1.0.0'),       // Auto namespace
+      description: new VnlState('A simple state management library') // Auto namespace
     }
 
+    // 4. Object with explicit namespace
     const state2 = new VnlState({
       name: 'Vanilla State',
       version: '1.0.0',
       description: 'A simple state management library'
-    })
+    }, { namespace: 'state2' })
+
+    // Logging namespace information
+    console.log('--- Namespace Information ---');
+    console.log('count namespace:', count.getNamespace());
+    console.log('autoState namespace:', autoState.getNamespace());
+    console.log('state.name namespace:', state.name.getNamespace());
+    console.log('state.version namespace:', state.version.getNamespace());
+    console.log('state.description namespace:', state.description.getNamespace());
+    console.log('state2 namespace:', state2.getNamespace());
 
     // Listen for changes in count (primitive)
-    // 새 방식: e.detail 대신 직접 value를 받음
     count.addEventListener('change', (value) => {
       console.log('Count changed to:', value)
       document.getElementById('counter-value').textContent = value
     })
 
-    // Listen for specific property changes (object)
-    state.name.addEventListener('name', (value) => {
-      console.log('name changed to', value)
+    // Automatic namespace state listeners
+    autoState.addEventListener('name', (value) => {
+      console.log('[autoState] name changed to', value)
     })
 
-    // Listen for specific property changes (object)
-    state.version.addEventListener('version', (value) => {
-      console.log('version changed to', value)
+    autoState.addEventListener('change', (changeInfo) => {
+      console.log(`[autoState] Property "${changeInfo.property}" changed to:`, changeInfo.value)
     })
 
-    // Listen for specific property changes (object)
-    state.description.addEventListener('description', (value) => {
-      console.log('description changed to', value)
+    // Listen for specific property changes (object) - case 1
+    state.name.addEventListener('change', (value) => {
+      console.log('[Case 1] name changed to', value)
     })
 
-    // Using the global 'change' event to listen for all changes
+    state.version.addEventListener('change', (value) => {
+      console.log('[Case 1] version changed to', value)
+    })
+
+    state.description.addEventListener('change', (value) => {
+      console.log('[Case 1] description changed to', value)
+    })
+
+    // Using the global 'change' event to listen for all changes - case 2
     state2.addEventListener('change', (changeInfo) => {
-      console.log(`Property "${changeInfo.property}" changed to:`, changeInfo.value)
+      console.log(`[Case 2] Property "${changeInfo.property}" changed to:`, changeInfo.value)
     })
+
+    // Events no longer conflict - because they have different namespaces
+    state2.addEventListener('name', (value) => {
+      console.log('[Case 2] name changed to', value)
+    })
+
+    state2.addEventListener('version', (value) => {
+      console.log('[Case 2] version changed to', value)
+    })
+
+    state2.addEventListener('description', (value) => {
+      console.log('[Case 2] description changed to', value)
+    })
+
+    // Event isolation test
+    console.log('----- Testing Event Isolation -----')
+    console.log('Changing state2 properties:')
+    state2.name = 'Updated Name'
+    state2.version = '2.0.0'
+    state2.description = 'Updated Description'
+
+    console.log('\nChanging state properties:')
+    state.name.set('Updated Individual Name')
+    state.version.set('3.0.0')
+    state.description.set('Updated Individual Description')
+
+    console.log('\nChanging autoState properties:')
+    autoState.name = 'Updated Auto Name'
+    autoState.active = false
 
     const form = document.querySelector('form')
     form.addEventListener('submit', (e) => {
@@ -67,10 +118,6 @@
         s.version = data.get('version')
         s.description = data.get('description')
       })
-
-      // Display current states after changes
-      console.log('Current count:', count.get())
-      console.log('Current state:', state2.get())
     })
 
     // Direct operations with primitive value
@@ -86,7 +133,10 @@
 
     // Display initial states
     console.log('Initial count:', count.get())
-    console.log('Initial state:', state2.get())
+    console.log('Initial state2:', state2.get())
+    console.log('Initial state.name:', state.name.get())
+    console.log('Initial state.version:', state.version.get())
+    console.log('Initial state.description:', state.description.get())
 
     // Extra examples showing primitive operations
     console.log('--- Examples of primitive operations ---')
@@ -100,7 +150,7 @@
       count.emit('button-clicked', { time: new Date() })
     })
 
-    // 새 방식의 이벤트 리스너: detail 대신 직접 값을 받음
+    // Event listener with namespace applied
     count.addEventListener('button-clicked', (eventData) => {
       console.log('Custom event received:', eventData);
       document.getElementById('custom-event-output').textContent =
@@ -111,6 +161,9 @@
 <body>
   <h1>Vanilla State Example</h1>
   <p>Check the console to see state changes</p>
+
+  <h2>Namespace Feature Demo</h2>
+  <p>Open your browser console to see the namespace information</p>
 
   <div>
     <h2>Counter: <span id="counter-value">0</span></h2>

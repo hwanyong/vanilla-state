@@ -4,17 +4,31 @@ interface EventOptions {
     cancelable?: boolean;
     composed?: boolean;
 }
+interface VnlStateOptions {
+    namespace?: string;
+    debug?: boolean;
+}
 declare class VnlState {
     private _state;
     private _listeners;
     private _value;
     private _isPrimitive;
+    private _namespace;
+    private _instanceId;
+    private _debug;
     [key: string]: any;
     /**
      * VnlState constructor
      * @param initialState Initial state values (optional) or primitive value
+     * @param options Additional options like namespace
      */
-    constructor(initialState?: any);
+    constructor(initialState?: any, options?: VnlStateOptions);
+    /**
+     * Get namespaced event name
+     * @param eventName Original event name
+     * @returns Namespaced event name
+     */
+    private _getNamespacedEventName;
     /**
      * Register state change event listener
      * @param eventName 'change' or specific property name or custom event
@@ -39,6 +53,26 @@ declare class VnlState {
      * @param prop Changed property name
      */
     private _notify;
+    /**
+     * Set namespace for this state instance
+     * @param namespace Namespace string
+     */
+    setNamespace(namespace: string): void;
+    /**
+     * Get current namespace
+     * @returns Current namespace
+     */
+    getNamespace(): string;
+    /**
+     * Get instance ID
+     * @returns Unique instance ID
+     */
+    getInstanceId(): number;
+    /**
+     * Enable or disable debug mode
+     * @param enabled Whether debug mode should be enabled
+     */
+    setDebug(enabled: boolean): void;
     /**
      * Set state (internal use)
      * @param prop Property name

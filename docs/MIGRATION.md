@@ -1,6 +1,53 @@
 # Migration Guide
 
-This document provides guidance for migrating from JavaScript to TypeScript versions of vanilla-state.
+This document provides guidance for migrating between versions of vanilla-state.
+
+## Support
+
+If you encounter any issues during migration:
+1. Check this migration guide
+2. Review the [README.md](../README.md)
+3. Review the [CHANGELOG.md](../docs/CHANGELOG.md)
+4. Open an issue on our [GitHub repository](https://github.com/hwanyong/vanilla-state/issues)
+
+## Migrating from v3.0.0 to v3.1.0
+
+Version 3.1.0 introduces performance improvements and stability enhancements with no breaking changes.
+
+### Improvements in v3.1.0
+
+1. **Enhanced Primitive State Handling**
+   - Better stability for primitive value operations
+   - More consistent behavior with arithmetic operations
+
+2. **TypeScript Integration**
+   - Enhanced type definitions
+   - Better type inference for event listeners
+
+3. **Performance Optimizations**
+   - Improved memory usage for large state objects
+   - Optimized event dispatch for better performance
+
+### Migration Steps
+
+As v3.1.0 contains no breaking changes, upgrading is straightforward:
+
+```bash
+npm install @uhd_kr/vanilla-state@3.1.0
+# or
+yarn add @uhd_kr/vanilla-state@3.1.0
+# or
+pnpm add @uhd_kr/vanilla-state@3.1.0
+```
+
+### New Debug Features
+
+You can take advantage of the improved debugging:
+
+```javascript
+const state = new VnlState({}, { debug: true });
+// More detailed debug logs will be available in the console
+```
 
 ## Version Changes
 
@@ -50,7 +97,7 @@ If you need to use a specific version:
 <script src="https://unpkg.com/@uhd_kr/vanilla-state@1.1.0"></script>
 
 <!-- Full TypeScript version -->
-<script src="https://unpkg.com/@uhd_kr/vanilla-state@2.0.0"></script>
+<script src="https://unpkg.com/@uhd_kr/vanilla-state@2.1.0"></script>
 ```
 
 ### 3. Direct File Import Users
@@ -137,14 +184,6 @@ state.addEventListener<number>('user.age', (age) => {
      }
    }
    ```
-
-## Support
-
-If you encounter any issues during migration:
-1. Check this migration guide
-2. Review the [README.md](../README.md)
-3. Review the [CHANGELOG.md](../docs/CHANGELOG.md)
-4. Open an issue on our [GitHub repository](https://github.com/hwanyong/vanilla-state/issues)
 
 ## Migrating from v2.1.0 to v3.0.0
 

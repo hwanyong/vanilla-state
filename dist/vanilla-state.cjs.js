@@ -1,14 +1,24 @@
 'use strict';
 
+// 전역 카운터 (모듈 레벨) - 각 인스턴스에 고유 ID 부여
+let instanceCounter = 0;
 class VnlState {
     /**
      * VnlState constructor
      * @param initialState Initial state values (optional) or primitive value
+     * @param options Additional options like namespace
      */
-    constructor(initialState) {
+    constructor(initialState, options) {
         this._state = {};
         this._listeners = {};
         this._isPrimitive = false;
+        this._instanceId = ++instanceCounter;
+        this._debug = options?.debug || false;
+        // Auto-generate namespace if not provided
+        this._namespace = options?.namespace || `vnl_${this._instanceId}`;
+        if (this._debug) {
+            console.log(`[VnlState] Created instance with namespace: ${this._namespace}`);
+        }
         // Handle primitive value initialization
         if (initialState !== undefined && initialState !== null &&
             (typeof initialState !== 'object' || initialState instanceof Date)) {
@@ -71,15 +81,27 @@ class VnlState {
         });
     }
     /**
+     * Get namespaced event name
+     * @param eventName Original event name
+     * @returns Namespaced event name
+     */
+    _getNamespacedEventName(eventName) {
+        return this._namespace ? `${this._namespace}:${eventName}` : eventName;
+    }
+    /**
      * Register state change event listener
      * @param eventName 'change' or specific property name or custom event
      * @param callback Function to be called when the event occurs
      */
     addEventListener(eventName, callback) {
-        if (!this._listeners[eventName]) {
-            this._listeners[eventName] = new Set();
+        const namespacedEvent = this._getNamespacedEventName(eventName);
+        if (!this._listeners[namespacedEvent]) {
+            this._listeners[namespacedEvent] = new Set();
         }
-        this._listeners[eventName].add(callback);
+        this._listeners[namespacedEvent].add(callback);
+        if (this._debug) {
+            console.log(`[VnlState:${this._namespace}] Added listener for event: ${eventName} (namespace: ${namespacedEvent})`);
+        }
     }
     /**
      * Remove state change event listener
@@ -87,10 +109,14 @@ class VnlState {
      * @param callback Function to be removed
      */
     removeEventListener(eventName, callback) {
-        if (this._listeners[eventName]) {
-            this._listeners[eventName].delete(callback);
-            if (this._listeners[eventName].size === 0) {
-                delete this._listeners[eventName];
+        const namespacedEvent = this._getNamespacedEventName(eventName);
+        if (this._listeners[namespacedEvent]) {
+            this._listeners[namespacedEvent].delete(callback);
+            if (this._listeners[namespacedEvent].size === 0) {
+                delete this._listeners[namespacedEvent];
+                if (this._debug) {
+                    console.log(`[VnlState:${this._namespace}] Removed listener for event: ${eventName}`);
+                }
             }
         }
     }
@@ -101,7 +127,8 @@ class VnlState {
      * @param options Optional event configuration
      */
     dispatchEvent(eventName, value, options) {
-        if (!this._listeners[eventName]) {
+        const namespacedEvent = this._getNamespacedEventName(eventName);
+        if (!this._listeners[namespacedEvent]) {
             return true; // No listeners, event not cancelled
         }
         const eventOptions = {
@@ -110,9 +137,12 @@ class VnlState {
             composed: options?.composed || false,
             detail: value // 여전히 내부적으로는 CustomEvent의 detail 속성 사용
         };
-        const event = new CustomEvent(eventName, eventOptions);
+        const event = new CustomEvent(namespacedEvent, eventOptions);
         let cancelled = false;
-        this._listeners[eventName].forEach(callback => {
+        if (this._debug) {
+            console.log(`[VnlState:${this._namespace}] Dispatching event: ${eventName} with value:`, value);
+        }
+        this._listeners[namespacedEvent].forEach(callback => {
             try {
                 // 콜백에 값과 이벤트 객체 모두 전달
                 callback(value, event);
@@ -121,7 +151,7 @@ class VnlState {
                 }
             }
             catch (error) {
-                console.error(`Error in event listener for ${eventName}:`, error);
+                console.error(`Error in event listener for ${namespacedEvent}:`, error);
             }
         });
         return !cancelled;
@@ -142,6 +172,37 @@ class VnlState {
             // 객체 상태일 때는 { property, value } 형태로 전달
             this.dispatchEvent('change', { property: prop, value: value });
         }
+    }
+    /**
+     * Set namespace for this state instance
+     * @param namespace Namespace string
+     */
+    setNamespace(namespace) {
+        if (this._debug) {
+            console.log(`[VnlState] Changing namespace from "${this._namespace}" to "${namespace}"`);
+        }
+        this._namespace = namespace;
+    }
+    /**
+     * Get current namespace
+     * @returns Current namespace
+     */
+    getNamespace() {
+        return this._namespace;
+    }
+    /**
+     * Get instance ID
+     * @returns Unique instance ID
+     */
+    getInstanceId() {
+        return this._instanceId;
+    }
+    /**
+     * Enable or disable debug mode
+     * @param enabled Whether debug mode should be enabled
+     */
+    setDebug(enabled) {
+        this._debug = enabled;
     }
     /**
      * Set state (internal use)

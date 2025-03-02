@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.0] - 2025-03-03
+
+### Added
+- Improved stability for primitive state management
+- Enhanced typings for better TypeScript integration
+- Optimized internal event handling for better performance
+
+### Changed
+- Improved documentation with more examples
+- Refined debugging capabilities with more detailed debug logs
+- Optimized memory usage for large state objects
+
 ## [3.0.0] - 2025-03-02
 
 ### Breaking Changes

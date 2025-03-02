@@ -7,15 +7,16 @@
 [![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🚨 Important: v3.0.0 Breaking Changes
+## 🚨 Important: v3.1.0 Updates
 
-Version 3.0.0 includes significant API improvements that require migration:
+Version 3.1.0 includes stability improvements and performance optimizations:
 
-- **New Event Listener API**: Changed from `(e) => e.detail` format to direct `(value, originalEvent)` format
-- **Enhanced Primitive Value Support**: Direct initialization and arithmetic operations
-- **Custom Event System**: New `emit()` method for custom events
+- Improved stability for primitive state management
+- Enhanced TypeScript integration
+- Optimized event handling and memory usage
+- Refined debugging capabilities
 
-See the [Migration Guide](docs/MIGRATION.md) for detailed instructions on updating from v2.x to v3.0.0.
+For those updating from v2.x, please refer to the [Migration Guide](docs/MIGRATION.md) for important API changes in v3.0.0.
 
 ## Features
 

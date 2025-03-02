@@ -1,5 +1,55 @@
 # Changelog
 
+## [3.0.0] - 2025-03-02
+
+### Breaking Changes
+
+- Completely redesigned event listener API
+  - Changed from `(e) => e.detail` format to direct `(value, originalEvent)` format
+  - This provides a cleaner, more intuitive API while maintaining access to the original event object when needed
+  - Example:
+    ```javascript
+    // Old v2.x
+    state.addEventListener('count', (e) => {
+      console.log(e.detail); // access value via e.detail
+    });
+
+    // New v3.x
+    state.addEventListener('count', (value) => {
+      console.log(value); // value is directly passed as first parameter
+    });
+    ```
+
+- Enhanced primitive value handling
+  - Direct constructor initialization with primitive values
+  - Full support for arithmetic operations via `valueOf()` implementation
+  - Example:
+    ```javascript
+    const count = new VnlState(0);
+    count.set(count + 1); // arithmetic operations supported
+    ```
+
+- Added custom event system
+  - New `emit()` method for dispatching custom events
+  - Full event options support: bubbles, cancelable, composed
+  - Example:
+    ```javascript
+    state.emit('custom-event', { data: 'value' });
+    state.addEventListener('custom-event', (data) => {
+      console.log(data); // { data: 'value' }
+    });
+    ```
+
+### Added
+- Full TypeScript refinements
+- Improved immutable state handling
+- Enhanced batch processing system for multiple updates
+
+### Changed
+- Consolidated get/getState methods for better consistency
+- Improved type safety across the entire codebase
+- Optimized internal event handling
+
 ## [2.1.0] - 2025-02-28
 
 ### Minor Changes

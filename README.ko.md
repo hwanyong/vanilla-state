@@ -7,6 +7,16 @@
 [![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## 🚨 중요: v3.0.0 주요 변경사항
+
+버전 3.0.0은 다음과 같은 주요 API 개선사항을 포함하고 있으며, 마이그레이션이 필요합니다:
+
+- **새로운 이벤트 리스너 API**: `(e) => e.detail` 형식에서 직접적인 `(value, originalEvent)` 형식으로 변경
+- **향상된 프리미티브 값 지원**: 직접 초기화 및 산술 연산 지원
+- **커스텀 이벤트 시스템**: 사용자 정의 이벤트를 위한 새로운 `emit()` 메서드
+
+v2.x에서 v3.0.0으로 업데이트하는 자세한 방법은 [마이그레이션 가이드](docs/MIGRATION.md)를 참조하세요.
+
 ## 주요 기능
 
 - 🚀 가벼운 크기와 제로 의존성
@@ -21,6 +31,10 @@
 ### 1. NPM 사용
 ```bash
 npm install @uhd_kr/vanilla-state
+# 또는
+yarn add @uhd_kr/vanilla-state
+# 또는
+pnpm add @uhd_kr/vanilla-state
 ```
 
 ```javascript
@@ -51,15 +65,29 @@ import VnlState from '@uhd_kr/vanilla-state';
 ```javascript
 import VnlState from '@uhd_kr/vanilla-state';
 
-const state = new VnlState();
+// 객체 상태 관리
+const state = new VnlState({
+  name: 'Vanilla State',
+  version: '3.0.0'
+});
 
-// 상태 리스너 추가
-state.addEventListener('count', (value) => {
-  console.log('카운트 변경:', value);
+// 상태 리스너 추가 - v3.0.0 새로운 API
+state.addEventListener('change', (changeInfo) => {
+  console.log(`${changeInfo.property} 값이 ${changeInfo.value}로 변경되었습니다`);
 });
 
 // 상태 업데이트
-state.count = 1; // 출력: 카운트 변경: 1
+state.name = '업데이트된 이름'; // 변경 이벤트 발생
+
+// 프리미티브 상태 관리 - v3.0.0 신규 기능
+const count = new VnlState(0);
+
+count.addEventListener('change', (value) => {
+  console.log('카운트 변경:', value);
+});
+
+// 프리미티브 상태 업데이트
+count.set(count + 1); // 변경 이벤트 발생
 ```
 
 ### TypeScript
@@ -67,14 +95,14 @@ state.count = 1; // 출력: 카운트 변경: 1
 ```typescript
 import VnlState from '@uhd_kr/vanilla-state';
 
-const state = new VnlState();
+// 타입 안전한 이벤트 리스너 (v3.0.0 API)
+const count = new VnlState(0);
 
-// 타입 안전한 이벤트 리스너
-state.addEventListener<number>('count', (value) => {
+count.addEventListener<number>('change', (value) => {
   console.log('카운트 변경:', value.toFixed(0));
 });
 
-state.count = 1; // 출력: 카운트 변경: 1
+count.set(count + 1); // 숫자 값으로 이벤트 발생
 ```
 
 ### 고급 사용법
@@ -95,6 +123,19 @@ state.batch((s) => {
   s.user.role = "관리자";
 });
 // 모든 업데이트가 완료된 후 리스너가 한 번만 실행됨
+```
+
+#### 커스텀 이벤트 (v3.0.0 신규)
+```javascript
+// 커스텀 이벤트 발생
+state.emit('save-completed', { success: true, timestamp: Date.now() });
+
+// 커스텀 이벤트 리스너 등록
+state.addEventListener('save-completed', (result) => {
+  if (result.success) {
+    showNotification('저장이 성공적으로 완료되었습니다!');
+  }
+});
 ```
 
 #### 다중 리스너

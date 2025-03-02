@@ -145,3 +145,236 @@ If you encounter any issues during migration:
 2. Review the [README.md](../README.md)
 3. Review the [CHANGELOG.md](../docs/CHANGELOG.md)
 4. Open an issue on our [GitHub repository](https://github.com/hwanyong/vanilla-state/issues)
+
+## Migrating from v2.1.0 to v3.0.0
+
+### Major Breaking Changes
+
+1. **Event Listener API Changes**
+
+   The biggest change in v3.0.0 is the event listener callback signature:
+
+   ```typescript
+   // v2.x - Using event.detail to access the value
+   state.addEventListener('count', (e) => {
+     console.log(e.detail); // access value via e.detail
+   });
+
+   // v3.0.0 - Value is directly passed as first parameter
+   state.addEventListener('count', (value, originalEvent) => {
+     console.log(value); // value is directly passed
+     console.log(originalEvent); // optional, original CustomEvent object
+   });
+   ```
+
+   **Migration Steps:**
+   - Replace all `e.detail` references with direct parameter usage
+   - If you need access to the original event, use the optional second parameter
+
+2. **Primitive Value Handling**
+
+   v3.0.0 has enhanced support for primitive values:
+
+   ```typescript
+   // v2.x - Less intuitive primitive handling
+   const state = new VnlState();
+   state.count = 0;
+
+   // v3.0.0 - Direct primitive initialization
+   const count = new VnlState(0);
+   count.set(count + 1); // Can perform arithmetic operations directly
+   ```
+
+   **Migration Steps:**
+   - Consider separating primitive state into dedicated instances
+   - Replace direct property access with get()/set() methods for primitives
+
+3. **Custom Event System**
+
+   v3.0.0 introduces a new custom event system:
+
+   ```typescript
+   // v3.0.0 only - Custom events
+   state.emit('custom-event', { data: 'value' });
+
+   state.addEventListener('custom-event', (data) => {
+     console.log(data); // { data: 'value' }
+   });
+   ```
+
+### Step-by-Step Migration Guide
+
+1. **Update Package**
+   ```bash
+   npm install @uhd_kr/vanilla-state@3.0.0
+   ```
+
+2. **Update Event Listeners**
+   ```typescript
+   // Find all instances like this:
+   state.addEventListener('property', (e) => {
+     doSomething(e.detail);
+   });
+
+   // Replace with:
+   state.addEventListener('property', (value) => {
+     doSomething(value);
+   });
+   ```
+
+3. **Update Primitive State Usage**
+   ```typescript
+   // Find patterns like:
+   const state = new VnlState();
+   state.count = 0;
+   state.count++;
+
+   // Replace with:
+   const count = new VnlState(0);
+   count.set(count.get() + 1);
+   // or
+   count.set(count + 1); // Using valueOf()
+   ```
+
+4. **Test Your Implementation**
+   - Start with small, isolated components
+   - Progressively update your application
+   - Use the browser console to verify event behavior
+
+### v3.0.0 Type System
+
+```typescript
+// New type definitions
+type Listener<T> = (value: T, originalEvent?: CustomEvent<T>) => void;
+
+interface EventOptions {
+  bubbles?: boolean;
+  cancelable?: boolean;
+  composed?: boolean;
+}
+
+interface VnlState {
+  addEventListener<T>(eventName: string, callback: Listener<T>): void;
+  removeEventListener<T>(eventName: string, callback: Listener<T>): void;
+  emit<T>(eventName: string, value?: T, options?: EventOptions): boolean;
+  // For primitive states
+  set(value: any): void;
+  get(): any;
+}
+```
+
+## Migrating from v1.x to v2.x
+
+### Major Breaking Changes
+
+1. **Event Listener API Changes**
+
+   The biggest change in v2.0.0 is the event listener callback signature:
+
+   ```typescript
+   // v1.x - Using event.detail to access the value
+   state.addEventListener('count', (e) => {
+     console.log(e.detail); // access value via e.detail
+   });
+
+   // v2.0.0 - Value is directly passed as first parameter
+   state.addEventListener('count', (value, originalEvent) => {
+     console.log(value); // value is directly passed
+     console.log(originalEvent); // optional, original CustomEvent object
+   });
+   ```
+
+   **Migration Steps:**
+   - Replace all `e.detail` references with direct parameter usage
+   - If you need access to the original event, use the optional second parameter
+
+2. **Primitive Value Handling**
+
+   v2.0.0 has enhanced support for primitive values:
+
+   ```typescript
+   // v1.x - Less intuitive primitive handling
+   const state = new VnlState();
+   state.count = 0;
+
+   // v2.0.0 - Direct primitive initialization
+   const count = new VnlState(0);
+   count.set(count + 1); // Can perform arithmetic operations directly
+   ```
+
+   **Migration Steps:**
+   - Consider separating primitive state into dedicated instances
+   - Replace direct property access with get()/set() methods for primitives
+
+3. **Custom Event System**
+
+   v2.0.0 introduces a new custom event system:
+
+   ```typescript
+   // v2.0.0 only - Custom events
+   state.emit('custom-event', { data: 'value' });
+
+   state.addEventListener('custom-event', (data) => {
+     console.log(data); // { data: 'value' }
+   });
+   ```
+
+### Step-by-Step Migration Guide
+
+1. **Update Package**
+   ```bash
+   npm install @uhd_kr/vanilla-state@2.0.0
+   ```
+
+2. **Update Event Listeners**
+   ```typescript
+   // Find all instances like this:
+   state.addEventListener('property', (e) => {
+     doSomething(e.detail);
+   });
+
+   // Replace with:
+   state.addEventListener('property', (value) => {
+     doSomething(value);
+   });
+   ```
+
+3. **Update Primitive State Usage**
+   ```typescript
+   // Find patterns like:
+   const state = new VnlState();
+   state.count = 0;
+   state.count++;
+
+   // Replace with:
+   const count = new VnlState(0);
+   count.set(count.get() + 1);
+   // or
+   count.set(count + 1); // Using valueOf()
+   ```
+
+4. **Test Your Implementation**
+   - Start with small, isolated components
+   - Progressively update your application
+   - Use the browser console to verify event behavior
+
+### v2.0.0 Type System
+
+```typescript
+// New type definitions
+type Listener<T> = (value: T, originalEvent?: CustomEvent<T>) => void;
+
+interface EventOptions {
+  bubbles?: boolean;
+  cancelable?: boolean;
+  composed?: boolean;
+}
+
+interface VnlState {
+  addEventListener<T>(eventName: string, callback: Listener<T>): void;
+  removeEventListener<T>(eventName: string, callback: Listener<T>): void;
+  emit<T>(eventName: string, value?: T, options?: EventOptions): boolean;
+  // For primitive states
+  set(value: any): void;
+  get(): any;
+}

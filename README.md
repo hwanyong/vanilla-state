@@ -7,6 +7,16 @@
 [![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## 🚨 Important: v3.0.0 Breaking Changes
+
+Version 3.0.0 includes significant API improvements that require migration:
+
+- **New Event Listener API**: Changed from `(e) => e.detail` format to direct `(value, originalEvent)` format
+- **Enhanced Primitive Value Support**: Direct initialization and arithmetic operations
+- **Custom Event System**: New `emit()` method for custom events
+
+See the [Migration Guide](docs/MIGRATION.md) for detailed instructions on updating from v2.x to v3.0.0.
+
 ## Features
 
 - 🚀 Lightweight and Zero Dependencies
@@ -55,15 +65,29 @@ Download from the `dist` folder:
 ```javascript
 import VnlState from '@uhd_kr/vanilla-state';
 
-const state = new VnlState();
+// Object state management
+const state = new VnlState({
+  name: 'Vanilla State',
+  version: '3.0.0'
+});
 
-// Add state listener
-state.addEventListener('count', (value) => {
-  console.log('Count changed:', value);
+// Add state listener - new v3.0.0 API
+state.addEventListener('change', (changeInfo) => {
+  console.log(`${changeInfo.property} changed to: ${changeInfo.value}`);
 });
 
 // Update state
-state.count = 1; // logs: Count changed: 1
+state.name = 'Updated Name'; // Triggers change event
+
+// Primitive state management - new in v3.0.0
+const count = new VnlState(0);
+
+count.addEventListener('change', (value) => {
+  console.log('Count changed to:', value);
+});
+
+// Update primitive state
+count.set(count + 1); // Triggers change event
 ```
 
 ### TypeScript
@@ -71,14 +95,14 @@ state.count = 1; // logs: Count changed: 1
 ```typescript
 import VnlState from '@uhd_kr/vanilla-state';
 
-const state = new VnlState();
+// Type-safe event listener with v3.0.0 API
+const count = new VnlState(0);
 
-// Type-safe event listener
-state.addEventListener<number>('count', (value) => {
-  console.log('Count changed:', value.toFixed(0));
+count.addEventListener<number>('change', (value) => {
+  console.log('Count changed to:', value.toFixed(0));
 });
 
-state.count = 1; // logs: Count changed: 1
+count.set(count + 1); // Triggers event with number value
 ```
 
 ### Advanced Usage
@@ -99,6 +123,19 @@ state.batch((s) => {
   s.user.role = "Admin";
 });
 // All listeners will be notified only once after all updates are complete
+```
+
+#### Custom Events (New in v3.0.0)
+```javascript
+// Emit a custom event
+state.emit('save-completed', { success: true, timestamp: Date.now() });
+
+// Listen for custom events
+state.addEventListener('save-completed', (result) => {
+  if (result.success) {
+    showNotification('Save completed successfully!');
+  }
+});
 ```
 
 #### Multiple Listeners

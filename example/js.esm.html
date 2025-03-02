@@ -5,69 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Example</title>
-  <script type="module" src="../dist/vanilla-state.esm.js"></script>
   <script type="module">
     import VnlState from '../dist/vanilla-state.esm.js'
 
-    const state = new VnlState()
+    // Using the constructor with primitive value (type 2)
+    const count = new VnlState(0)
 
-    state.count = 0;
-    state.addEventListener('count', (e) => {
-      console.log('count changed to', e)
-    })
+    // Using the constructor with initial object state (type 1)
+    const state = {
+      name: new VnlState('Vanilla State'),
+      version: new VnlState('1.0.0'),
+      description: new VnlState('A simple state management library')
+    }
 
-    state.info = {
+    const state2 = new VnlState({
       name: 'Vanilla State',
       version: '1.0.0',
       description: 'A simple state management library'
-    }
+    })
 
-    state.addEventListener('info', (e) => {
-      console.log('info changed to', e)
+    // Listen for changes in count (primitive)
+    // 새 방식: e.detail 대신 직접 value를 받음
+    count.addEventListener('change', (value) => {
+      console.log('Count changed to:', value)
+      document.getElementById('counter-value').textContent = value
     })
-    state.addEventListener('info.name', (e) => {
-      console.log('info.name changed to', e)
+
+    // Listen for specific property changes (object)
+    state.name.addEventListener('name', (value) => {
+      console.log('name changed to', value)
     })
-    state.addEventListener('info.version', (e) => {
-      console.log('info.version changed to', e)
+
+    // Listen for specific property changes (object)
+    state.version.addEventListener('version', (value) => {
+      console.log('version changed to', value)
     })
-    state.addEventListener('info.description', (e) => {
-      console.log('info.description changed to', e)
+
+    // Listen for specific property changes (object)
+    state.description.addEventListener('description', (value) => {
+      console.log('description changed to', value)
+    })
+
+    // Using the global 'change' event to listen for all changes
+    state2.addEventListener('change', (changeInfo) => {
+      console.log(`Property "${changeInfo.property}" changed to:`, changeInfo.value)
     })
 
     const form = document.querySelector('form')
     form.addEventListener('submit', (e) => {
       e.preventDefault()
-
       console.log('form submitted')
 
       const data = new FormData(form)
 
-      // state.info.name = data.get('name')
+      // Modify primitive value using set()
+      count.set(count + 1)
 
-      state.batch((s) => {
-        s.count = 1
-        s.info.name = data.get('name')
-        s.info.version = data.get('version')
-        s.info.description = data.get('description')
-      });
+      // Using batch for object state
+      state2.batch((s) => {
+        s.name = data.get('name')
+        s.version = data.get('version')
+        s.description = data.get('description')
+      })
+
+      // Display current states after changes
+      console.log('Current count:', count.get())
+      console.log('Current state:', state2.get())
     })
 
-    document.getElementById('increment').addEventListener('click', () => state.count++)
-    document.getElementById('decrement').addEventListener('click', () => state.count--)
+    // Direct operations with primitive value
+    document.getElementById('increment').addEventListener('click', () => {
+      // Using set() with valueOf()
+      count.set(count + 1)
+    })
+
+    document.getElementById('decrement').addEventListener('click', () => {
+      // Using set() with valueOf()
+      count.set(count - 1)
+    })
+
+    // Display initial states
+    console.log('Initial count:', count.get())
+    console.log('Initial state:', state2.get())
+
+    // Extra examples showing primitive operations
+    console.log('--- Examples of primitive operations ---')
+    console.log('count + 5 =', count + 5) // Works because of valueOf()
+    console.log('count * 2 =', count * 2)
+    console.log('count as string:', count.toString())
+
+    // Custom event example
+    document.getElementById('custom-event').addEventListener('click', () => {
+      // Emit a custom event not tied to state changes
+      count.emit('button-clicked', { time: new Date() })
+    })
+
+    // 새 방식의 이벤트 리스너: detail 대신 직접 값을 받음
+    count.addEventListener('button-clicked', (eventData) => {
+      console.log('Custom event received:', eventData);
+      document.getElementById('custom-event-output').textContent =
+        `Last clicked: ${eventData.time.toLocaleTimeString()}`
+    });
   </script>
 </head>
 <body>
-  <h1>Check the console</h1>
+  <h1>Vanilla State Example</h1>
+  <p>Check the console to see state changes</p>
 
-  <button id="increment">Increment</button>
-  <button id="decrement">Decrement</button>
+  <div>
+    <h2>Counter: <span id="counter-value">0</span></h2>
+    <button id="increment">Increment</button>
+    <button id="decrement">Decrement</button>
+  </div>
 
+  <div>
+    <h2>Custom Events</h2>
+    <button id="custom-event">Trigger Custom Event</button>
+    <p id="custom-event-output">No events yet</p>
+  </div>
+
+  <h2>Update State Info</h2>
   <form>
-    <input type="text" name="name" value="Vanilla State">
-    <input type="text" name="version" value="1.0.0">
-    <input type="text" name="description" value="A simple state management library">
-    <button type="submit">Submit</button>
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" value="Vanilla State">
+    </div>
+    <div>
+      <label for="version">Version:</label>
+      <input type="text" id="version" name="version" value="1.0.0">
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" value="A simple state management library">
+    </div>
+    <button type="submit">Update State</button>
   </form>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla State - Lightweight State Management Library</title>
+  <title>Vanilla State - 가벼운 상태 관리 라이브러리</title>
   <style>
     :root {
       --primary-color: #3498db;
@@ -34,15 +34,16 @@
       padding: 2rem 0;
       background-color: var(--primary-color);
       color: white;
+    }
 
-      & h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-      }
-      & p {
-        font-size: 1.2rem;
-        opacity: 0.9;
-      }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
     }
 
     .features {
@@ -160,81 +161,81 @@
   <header>
     <div class="container">
       <h1>Vanilla State</h1>
-      <p>Lightweight State Management for Vanilla JavaScript</p>
+      <p>가벼운 바닐라 자바스크립트 상태 관리 라이브러리</p>
       <div style="margin-top: 20px;">
-        <a href="index.html" class="btn" style="background-color: var(--secondary-color);">English</a>
-        <a href="index.ko.html" class="btn">한국어</a>
+        <a href="index.html" class="btn">English</a>
+        <a href="index.ko.html" class="btn" style="background-color: var(--secondary-color);">한국어</a>
       </div>
     </div>
   </header>
 
   <div class="container">
     <section class="intro">
-      <h2>What is Vanilla State?</h2>
-      <p>Vanilla State is a lightweight state management solution for modern web applications. It provides proxy-based reactivity to maintain clean code while enabling effective state management.</p>
+      <h2>Vanilla State란?</h2>
+      <p>Vanilla State는 모던 웹 애플리케이션을 위한 가벼운 상태 관리 솔루션입니다. Proxy 기반의 반응성을 제공하여 코드를 간결하게 유지하면서도 효과적인 상태 관리가 가능합니다.</p>
     </section>
 
     <section class="features">
       <div class="feature-card">
-        <h3>Lightweight & Fast</h3>
-        <p>Designed with zero dependencies, resulting in a very small bundle size.</p>
+        <h3>가볍고 빠른 속도</h3>
+        <p>외부 의존성 없이 설계되어 번들 사이즈가 매우 작습니다.</p>
       </div>
       <div class="feature-card">
-        <h3>Proxy-based Reactivity</h3>
-        <p>Utilizes JavaScript Proxies for efficient state detection and update systems.</p>
+        <h3>Proxy 기반 반응성</h3>
+        <p>JavaScript Proxy를 활용한 효율적인 상태 감지와 업데이트 시스템을 제공합니다.</p>
       </div>
       <div class="feature-card">
-        <h3>Framework Agnostic</h3>
-        <p>Can be used with any framework including React, Vue, Angular, or plain JavaScript.</p>
+        <h3>프레임워크 독립적</h3>
+        <p>React, Vue, Angular 등 어떤 프레임워크와도 함께 사용할 수 있습니다.</p>
       </div>
     </section>
 
     <section class="installation">
-      <h2>Installation</h2>
+      <h2>설치 방법</h2>
       <pre><code>npm install @uhd_kr/vanilla-state</code></pre>
-      <p>or</p>
+      <p>또는</p>
       <pre><code>pnpm add @uhd_kr/vanilla-state</code></pre>
     </section>
 
-    <section class="usage"></section>
-      <h2>Usage</h2>
+    <section class="usage">
+      <h2>사용 방법</h2>
       <pre><code>// ESM
 import VnlState from '@uhd_kr/vanilla-state';
 
-// Create a basic state
+// 기본 상태 생성
 const count = new VnlState(0);
 
-// Add event listener
+// 이벤트 리스너 추가
 count.addEventListener('change', (value) => {
   console.log('Count changed to:', value);
 });
 
-// Update state
+// 상태 업데이트
 count.set(count + 1);
 </code></pre>
     </section>
 
     <section class="examples">
-      <h2>Examples</h2>
-      <p>Check out various use cases:</p>
+      <h2>예제 코드</h2>
+      <p>다양한 사용 사례를 확인해보세요:</p>
       <div class="example-links">
-        <a href="js.esm.html" class="example-link">ES Module Example</a>
-        <a href="js.cjs.html" class="example-link">CommonJS Example</a>
-        <a href="ts.html" class="example-link">TypeScript Example</a>
+        <a href="js.esm.html" class="example-link">ES Module 예제</a>
+        <a href="js.cjs.html" class="example-link">CommonJS 예제</a>
+        <a href="ts.html" class="example-link">TypeScript 예제</a>
       </div>
     </section>
 
     <section class="cta-section">
-      <h2>Get Started Today!</h2>
-      <p>Experience cleaner, more maintainable state management with Vanilla State.</p>
-      <a href="https://github.com/hwanyong/vanilla-state" class="btn">GitHub Repository</a>
-      <a href="https://www.npmjs.com/package/@uhd_kr/vanilla-state" class="btn">NPM Package</a>
+      <h2>지금 시작하세요!</h2>
+      <p>Vanilla State로 더 간결하고 관리하기 쉬운 상태 관리를 경험하세요.</p>
+      <a href="https://github.com/hwanyong/vanilla-state" class="btn">GitHub 저장소</a>
+      <a href="https://www.npmjs.com/package/@uhd_kr/vanilla-state" class="btn">NPM 패키지</a>
     </section>
   </div>
 
   <footer>
     <div class="container">
-      <p>© 2023-2025 Hwanyong Yoo (UHD) - MIT License</p>
+      <p>© 2023-2024 Hwanyong Yoo (UHD) - MIT License</p>
       <div class="footer-links">
         <a href="https://github.com/hwanyong/vanilla-state">GitHub</a>
         <a href="https://github.com/hwanyong/vanilla-state/issues">Issues</a>

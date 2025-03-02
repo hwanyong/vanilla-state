@@ -3,9 +3,484 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Example</title>
+  <title>Vanilla State - TypeScript Example</title>
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2980b9;
+      --text-color: #333;
+      --background-color: #f8f9fa;
+      --card-bg: #fff;
+      --border-color: #e1e4e8;
+      --code-bg: #f1f1f1;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-bottom: 2rem;
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    header p {
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .nav-links {
+      margin-top: 1rem;
+    }
+
+    .nav-links a {
+      color: white;
+      margin: 0 0.5rem;
+      text-decoration: none;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-links a.active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .counter-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .counter-value {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin: 1rem 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .code-example {
+      background-color: var(--code-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      margin-bottom: 2rem;
+    }
+
+    .console-tip {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .todo-container {
+      margin-top: 2rem;
+    }
+
+    .todo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .todo-item:last-child {
+      border-bottom: none;
+    }
+
+    .todo-item input[type="checkbox"] {
+      margin-right: 1rem;
+    }
+
+    .todo-text {
+      flex: 1;
+    }
+
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .todo-form {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .todo-form input[type="text"] {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px 0 0 4px;
+      font-size: 1rem;
+    }
+
+    .todo-form button {
+      border-radius: 0 4px 4px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      background-color: var(--primary-color);
+      color: white;
+      margin-top: 3rem;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .button-group {
+        flex-direction: column;
+      }
+
+      .todo-form {
+        flex-direction: column;
+      }
+
+      .todo-form input[type="text"] {
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+      }
+
+      .todo-form button {
+        border-radius: 4px;
+      }
+    }
+  </style>
+  <!-- 먼저 라이브러리를 로드하고 나서 스크립트 실행 -->
+  <script defer src="../dist/vanilla-state.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 전역으로 로드된 VanillaState를 VnlState로 별칭 지정하여 사용
+      const VnlState = VanillaState;
+
+      // TypeScript 코드 예시를 표시
+      document.getElementById('ts-code-example').textContent =
+`// TypeScript 타입 정의 및 예제
+import VnlState from '@uhd_kr/vanilla-state';
+
+// 타입 정의
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+// 할 일 목록 상태 생성
+const todos = new VnlState<Todo[]>([
+  { id: 1, text: 'Vanilla State 학습하기', completed: false },
+  { id: 2, text: 'TypeScript로 프로젝트 만들기', completed: false }
+]);
+
+// 카운터 상태 (숫자 타입 지정)
+const count = new VnlState<number>(0);
+
+// 사용자 상태 (객체 타입 지정)
+interface User {
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
+const user = new VnlState<User>({
+  name: '홍길동',
+  email: 'user@example.com',
+  isAdmin: false
+});
+
+// 이벤트 리스너 (타입 안전성 제공)
+todos.addEventListener('change', (todoList: Todo[]) => {
+  console.log('Todo list updated:', todoList);
+  renderTodos();
+});`;
+
+      // 할 일 목록 상태 관리 - 객체 대신 배열로 초기화하여 직접 관리
+      let todoItems = [
+        { id: 1, text: 'Vanilla State 학습하기', completed: false },
+        { id: 2, text: 'TypeScript로 프로젝트 만들기', completed: false }
+      ];
+
+      const todosState = new VnlState({ items: todoItems }, { namespace: 'todo-list' });
+
+      // 카운터 상태
+      const count = new VnlState(0, { namespace: 'ts-counter' });
+
+      // DOM 요소 참조
+      const todoList = document.getElementById('todo-list');
+      const todoForm = document.getElementById('todo-form');
+      const todoInput = document.getElementById('todo-input');
+      const counterValue = document.getElementById('counter-value');
+
+      // 할 일 목록 렌더링
+      function renderTodos() {
+        // 상태에서 items 속성을 가져옴
+        const state = todosState.get();
+        todoList.innerHTML = '';
+
+        // 템플릿 기반 렌더링을 위한 HTML 문자열 준비
+        const todoItemTemplate = document.getElementById('todo-item-template').innerHTML;
+
+        state.items.forEach(todo => {
+          // 템플릿의 특별 식별자를 실제 데이터로 대체
+          const todoHtml = todoItemTemplate
+            .replace(/{{ID}}/g, todo.id)
+            .replace(/{{TEXT}}/g, todo.text)
+            .replace(/{{COMPLETED_CLASS}}/g, todo.completed ? 'completed' : '')
+            .replace(/{{CHECKED}}/g, todo.completed ? 'checked' : '');
+
+          // HTML 문자열을 DOM 요소로 변환
+          const temp = document.createElement('div');
+          temp.innerHTML = todoHtml;
+          const todoElement = temp.firstElementChild;
+
+          // 이벤트 리스너 연결
+          todoElement.querySelector('.todo-checkbox').addEventListener('change', (e) => {
+            toggleTodo(todo.id);
+          });
+
+          todoElement.querySelector('.todo-delete').addEventListener('click', () => {
+            deleteTodo(todo.id);
+          });
+
+          // 목록에 추가
+          todoList.appendChild(todoElement);
+        });
+      }
+
+      // 할 일 추가
+      function addTodo(text) {
+        const state = todosState.get();
+        const newItems = [...state.items, {
+          id: Date.now(),
+          text,
+          completed: false
+        }];
+
+        todosState.batch(state => {
+          state.items = newItems;
+        });
+
+        renderTodos();
+      }
+
+      // 할 일 토글
+      function toggleTodo(id) {
+        const state = todosState.get();
+        const newItems = state.items.map(todo =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        );
+
+        todosState.batch(state => {
+          state.items = newItems;
+        });
+
+        renderTodos();
+      }
+
+      // 할 일 삭제
+      function deleteTodo(id) {
+        const state = todosState.get();
+        const newItems = state.items.filter(todo => todo.id !== id);
+
+        todosState.batch(state => {
+          state.items = newItems;
+        });
+
+        renderTodos();
+      }
+
+      // 폼 제출 핸들러
+      todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = todoInput.value.trim();
+
+        if (text) {
+          addTodo(text);
+          todoInput.value = '';
+        }
+      });
+
+      // 카운터 관련 이벤트 처리
+      count.addEventListener('change', (value) => {
+        counterValue.textContent = value;
+      });
+
+      document.getElementById('increment').addEventListener('click', () => {
+        count.set(count + 1);
+      });
+
+      document.getElementById('decrement').addEventListener('click', () => {
+        count.set(count - 1);
+      });
+
+      // 초기 렌더링
+      renderTodos();
+      counterValue.textContent = count.get();
+
+      // 상태 변화 감지
+      todosState.addEventListener('change', () => {
+        renderTodos();
+      });
+    });
+  </script>
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <header>
+    <div class="container">
+      <h1>Vanilla State</h1>
+      <p>TypeScript Example</p>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="js.esm.html">ES Module</a>
+        <a href="js.cjs.html">CommonJS</a>
+        <a href="ts.html" class="active">TypeScript</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="console-tip">
+      <strong>참고:</strong> 이 예제는 타입스크립트 코드가 어떻게 작성되는지 보여주는 예시입니다. 실제로는 브라우저에서 컴파일된 JavaScript가 실행됩니다.
+    </div>
+
+    <div class="card">
+      <h2>TypeScript 코드 예시</h2>
+      <pre class="code-example" id="ts-code-example"></pre>
+    </div>
+
+    <div class="card counter-card">
+      <h2>Counter Demo</h2>
+      <div class="counter-value" id="counter-value">0</div>
+      <div class="button-group">
+        <button id="increment">Increment</button>
+        <button id="decrement">Decrement</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Todo List Demo</h2>
+      <p>TypeScript와 Vanilla State를 사용한 할 일 목록 예제입니다.</p>
+
+      <div class="todo-container">
+        <form id="todo-form" class="todo-form">
+          <input type="text" id="todo-input" placeholder="할 일 입력..." required>
+          <button type="submit">추가</button>
+        </form>
+
+        <ul id="todo-list" class="todo-list">
+          <!-- 할 일 목록이 여기에 렌더링됩니다 -->
+        </ul>
+
+        <!-- 할 일 항목 템플릿 -->
+        <template id="todo-item-template">
+          <li class="todo-item {{COMPLETED_CLASS}}" data-id="{{ID}}">
+            <input type="checkbox" class="todo-checkbox" {{CHECKED}}>
+            <span class="todo-text">{{TEXT}}</span>
+            <button class="todo-delete" style="margin-left: auto;">삭제</button>
+          </li>
+        </template>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>TypeScript의 장점</h2>
+      <ul>
+        <li><strong>타입 안전성:</strong> 컴파일 시점에 타입 오류를 잡아 런타임 에러를 방지합니다.</li>
+        <li><strong>IDE 지원:</strong> 자동 완성과 같은 개발 도구의 지원이 향상됩니다.</li>
+        <li><strong>리팩토링 용이성:</strong> 코드 변경 시 관련된 부분을 쉽게 확인할 수 있습니다.</li>
+        <li><strong>명확한 문서화:</strong> 타입 정의를 통해 코드 자체가 문서 역할을 합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Built with <a href="https://github.com/hwanyong/vanilla-state">Vanilla State</a> - A lightweight state management library</p>
+      <p>© 2023-2025 Hwanyong Yoo (UHD)</p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- 메인 페이지 (영문) -->
+  <url>
+    <loc>https://hwanyong.github.io/vanilla-state/</loc>
+    <lastmod>2024-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hwanyong.github.io/vanilla-state/index.ko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hwanyong.github.io/vanilla-state/"/>
+  </url>
+
+  <!-- 메인 페이지 (한국어) -->
+  <url>
+    <loc>https://hwanyong.github.io/vanilla-state/index.ko.html</loc>
+    <lastmod>2024-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hwanyong.github.io/vanilla-state/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hwanyong.github.io/vanilla-state/index.ko.html"/>
+  </url>
+
+  <!-- TypeScript 예제 페이지 -->
+  <url>
+    <loc>https://hwanyong.github.io/vanilla-state/ts.html</loc>
+    <lastmod>2024-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ES Module 예제 페이지 -->
+  <url>
+    <loc>https://hwanyong.github.io/vanilla-state/js.esm.html</loc>
+    <lastmod>2024-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- CommonJS 예제 페이지 -->
+  <url>
+    <loc>https://hwanyong.github.io/vanilla-state/js.cjs.html</loc>
+    <lastmod>2024-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

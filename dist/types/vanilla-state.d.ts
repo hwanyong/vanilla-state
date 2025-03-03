@@ -4,6 +4,9 @@ interface EventOptions {
     cancelable?: boolean;
     composed?: boolean;
 }
+interface SetOptions {
+    notify?: boolean;
+}
 interface VnlStateOptions {
     namespace?: string;
     debug?: boolean;
@@ -81,16 +84,21 @@ declare class VnlState {
      */
     private _setState;
     /**
-     * Set state without notification
-     * @param prop Property name
-     * @param value Value to set
+     * Set state value with optional notification control.
+     *
+     * For primitive state:
+     * - set(value) - 기본값 업데이트 (알림 있음)
+     * - set(value, { notify: false }) - 기본값 업데이트 (알림 없음)
+     *
+     * For object state:
+     * - set(prop, value) - 객체 속성 업데이트 (알림 있음)
+     * - set(prop, value, { notify: false }) - 객체 속성 업데이트 (알림 없음)
+     *
+     * @param propOrValue Property name (for object state) or direct value (for primitive state)
+     * @param valueOrOptions Value to set (for object state) or options (for primitive state)
+     * @param options Options to control behavior
      */
-    setWithoutNotify<T>(prop: string, value: T): void;
-    /**
-     * Set the value directly for primitive states
-     * @param value New value
-     */
-    set(value: any): void;
+    set<T>(propOrValue: string | any, valueOrOptions?: any | SetOptions, options?: SetOptions): void;
     /**
      * Gets the current state value.
      * - For primitive states: returns the primitive value

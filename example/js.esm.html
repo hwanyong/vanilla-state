@@ -221,7 +221,8 @@
     }
   </style>
   <script type="module">
-    import VnlState from 'https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.esm.js'
+    // import VnlState from 'https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.esm.js'
+    import VnlState from '../dist/vanilla-state.esm.js'
 
     // 1. Setting explicit namespace
     const count = new VnlState(0, { namespace: 'counter' })
@@ -313,9 +314,51 @@
     state.version.set('3.0.0')
     state.description.set('Updated Individual Description')
 
+    // New API - Update state without notifications (set method + notify option)
+    console.log('\n----- Testing Silent Updates -----')
+    console.log('Updating state2 properties without notifications:')
+    state2.set('name', 'Silent Name Update', { notify: false })
+    state2.set('version', '4.0.0', { notify: false })
+
+    // Intentionally trigger a notification afterwards
+    console.log('Now triggering a notification:')
+    state2.set('description', 'This update will trigger notifications')
+
+    // Silent update for primitive state
+    console.log('\nUpdating primitive states without notifications:')
+    state.name.set('Silent Primitive Update', { notify: false })
+
+    // Intentionally trigger a notification afterwards
+    state.version.set('5.0.0') // Default is with notification
+
     console.log('\nChanging autoState properties:')
     autoState.name = 'Updated Auto Name'
     autoState.active = false
+
+    // Object state API test button event handler
+    document.getElementById('test-object-notify').addEventListener('click', () => {
+      const doNotify = document.getElementById('object-notify').checked
+      const prop = document.getElementById('object-property').value || 'name'
+      const value = document.getElementById('object-value').value || 'Test Value'
+
+      console.log(`Updating state2.${prop} to "${value}" with notify:`, doNotify)
+      state2.set(prop, value, { notify: !doNotify })
+
+      document.getElementById('object-test-result').textContent =
+        `Updated state2.${prop} = "${value}" with notify: ${!doNotify}. Check console.`
+    })
+
+    // Primitive state API test button event handler
+    document.getElementById('test-primitive-notify').addEventListener('click', () => {
+      const doNotify = document.getElementById('primitive-notify').checked
+      const value = document.getElementById('primitive-value').value || '0'
+
+      console.log(`Updating count to "${value}" with notify:`, doNotify)
+      count.set(parseInt(value, 10), { notify: !doNotify })
+
+      document.getElementById('primitive-test-result').textContent =
+        `Updated count = ${value} with notify: ${!doNotify}. ${doNotify ? 'UI should NOT update.' : 'UI should update.'}`
+    })
 
     const form = document.querySelector('form')
     form.addEventListener('submit', (e) => {
@@ -401,6 +444,32 @@
       </div>
     </div>
 
+    <div class="card">
+      <h2>Notification Control API Test</h2>
+      <p>Use the new set function API to control notifications.</p>
+
+      <h3>1. Primitive State</h3>
+      <div style="margin-bottom: 1rem;">
+        <input type="number" id="primitive-value" placeholder="Number value" value="42" style="padding: 0.5rem; width: 100px;">
+        <label style="margin-left: 1rem;">
+          <input type="checkbox" id="primitive-notify"> Disable notifications
+        </label>
+        <button id="test-primitive-notify" style="margin-left: 1rem;">Update</button>
+      </div>
+      <div id="primitive-test-result" style="font-style: italic; margin-top: 0.5rem; color: #666;"></div>
+
+      <h3>2. Object State</h3>
+      <div style="margin-bottom: 1rem;">
+        <input type="text" id="object-property" placeholder="Property name" value="name" style="padding: 0.5rem; width: 100px;">
+        <input type="text" id="object-value" placeholder="Value" value="Test Value" style="padding: 0.5rem; width: 150px; margin-left: 0.5rem;">
+        <label style="margin-left: 1rem;">
+          <input type="checkbox" id="object-notify"> Disable notifications
+        </label>
+        <button id="test-object-notify" style="margin-left: 1rem;">Update</button>
+      </div>
+      <div id="object-test-result" style="font-style: italic; margin-top: 0.5rem; color: #666;"></div>
+    </div>
+
     <div class="card custom-event-card">
       <h2>Custom Events</h2>
       <p>Custom events can be emitted and received regardless of state changes.</p>
@@ -439,6 +508,30 @@
       </ol>
       <p>Check the console log to see namespace information and event isolation in action.</p>
     </div>
+
+    <div class="card">
+      <h2>New API Features</h2>
+      <p>The updated Vanilla State API provides the following features:</p>
+      <ul>
+        <li><strong>Unified set API:</strong> Consistent usage across both object and primitive states</li>
+        <li><strong>Notification control:</strong> Control event dispatch with <code>{ notify: false }</code> option</li>
+        <li><strong>Type safety:</strong> Clear error messages when parameters are used incorrectly</li>
+      </ul>
+
+      <h3>Example Code:</h3>
+      <pre style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow: auto;">
+// Primitive State
+const count = new VnlState(0);
+count.set(5);                     // Basic usage (with notification)
+count.set(10, { notify: false }); // Update without notification
+
+// Object State
+const user = new VnlState({ name: 'John Doe', age: 30 });
+user.set('name', 'Jane Smith');                  // Basic usage (with notification)
+user.set('age', 31, { notify: false });          // Update without notification
+      </pre>
+    </div>
+
   </div>
 
   <footer>

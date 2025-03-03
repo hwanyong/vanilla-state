@@ -18,6 +18,11 @@ interface EventOptions {
   composed?: boolean;
 }
 
+// State update options
+interface SetOptions {
+  notify?: boolean;  // Whether to trigger notification events
+}
+
 interface VnlStateOptions {
   namespace?: string; // Add namespace option
   debug?: boolean;    // Add debug option for logging namespace information
@@ -289,28 +294,89 @@ class VnlState {
 	}
 
 	/**
-	 * Set state without notification
-	 * @param prop Property name
-	 * @param value Value to set
+	 * Set state value with optional notification control.
+	 *
+	 * For primitive state:
+	 * - set(value) - 기본값 업데이트 (알림 있음)
+	 * - set(value, { notify: false }) - 기본값 업데이트 (알림 없음)
+	 *
+	 * For object state:
+	 * - set(prop, value) - 객체 속성 업데이트 (알림 있음)
+	 * - set(prop, value, { notify: false }) - 객체 속성 업데이트 (알림 없음)
+	 *
+	 * @param propOrValue Property name (for object state) or direct value (for primitive state)
+	 * @param valueOrOptions Value to set (for object state) or options (for primitive state)
+	 * @param options Options to control behavior
 	 */
-	setWithoutNotify<T>(prop: string, value: T): void {
-		this._setState(prop, value, false);
-	}
-
-	/**
-	 * Set the value directly for primitive states
-	 * @param value New value
-	 */
-	set(value: any): void {
+	set<T>(propOrValue: string | any, valueOrOptions?: any | SetOptions, options?: SetOptions): void {
+		// 기본값(primitive) 상태 처리
 		if (this._isPrimitive) {
+			const value = propOrValue;
+			let notify = true;
+
+			 // 인자 유효성 검사 - primitive 값은 최대 2개까지만 허용
+			if (arguments.length > 2) {
+				const errorMsg = 'Invalid parameters for primitive state. Use set(value) or set(value, { notify: false })';
+				if (this._debug) {
+					console.error(errorMsg);
+				}
+				throw new Error(errorMsg);
+			}
+
+			// 두 번째 인자 검사 (옵션 객체여야 함)
+			if (arguments.length === 2) {
+				if (!valueOrOptions || typeof valueOrOptions !== 'object' || !('notify' in valueOrOptions)) {
+					const errorMsg = 'Second parameter for primitive state must be options object with notify property';
+					if (this._debug) {
+						console.error(errorMsg, valueOrOptions);
+					}
+					throw new Error(errorMsg);
+				}
+				notify = valueOrOptions.notify !== false;
+			}
+
 			const oldValue = this._value;
 			this._value = value;
 
-			if (oldValue !== value) {
+			if (notify && oldValue !== value) {
 				this.dispatchEvent('change', value);
 			}
-		} else {
-			console.warn('set() method should only be called on primitive VnlState instances');
+			return;
+		}
+
+		// 객체 상태 처리
+		if (!this._isPrimitive) {
+			// prop 반드시 문자열이어야 함
+			if (typeof propOrValue !== 'string') {
+				const errorMsg = 'For object state, property name (string) is required as first parameter';
+				if (this._debug) {
+					console.error(errorMsg, propOrValue);
+				}
+				throw new Error(errorMsg);
+			}
+
+			// 두 번째 인자 누락 검사
+			if (arguments.length < 2) {
+				const errorMsg = 'For object state, value is required as second parameter';
+				if (this._debug) {
+					console.error(errorMsg);
+				}
+				throw new Error(errorMsg);
+			}
+
+			// 세 번째 인자 타입 검사 (존재할 경우)
+			if (arguments.length > 2 && (options === null || typeof options !== 'object')) {
+				const warnMsg = 'Third parameter should be options object. Using default notify:true';
+				if (this._debug) {
+					console.warn(warnMsg, options);
+				}
+			}
+
+			const prop = propOrValue;
+			const value = valueOrOptions;
+			const notify = options?.notify !== false;
+
+			this._setState(prop, value, notify);
 		}
 	}
 
@@ -345,7 +411,7 @@ class VnlState {
 				if (prop in target && typeof target[prop] !== 'function') {
 					target[prop] = value;
 				} else {
-					target.setWithoutNotify(prop, value);
+					target.set(prop, value, { notify: false });
 				}
 				return true;
 			}

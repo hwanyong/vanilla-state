@@ -187,50 +187,44 @@
       }
     }
   </style>
-  <!-- 먼저 라이브러리를 로드하고 나서 스크립트 실행 -->
-  <script defer src="https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.min.js"></script>
+  <!-- Load library first, then execute script -->
+  <!-- <script defer src="https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.min.js"></script> -->
+  <script defer src="../dist/vanilla-state.cjs.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 실제 CommonJS 환경에서는 다음과 같이 사용됩니다:
+      // In a real CommonJS environment, you would use:
       // const VnlState = require('@uhd_kr/vanilla-state');
 
-      // 전역으로 로드된 VanillaState를 VnlState로 별칭 지정하여 사용
+      // Use globally loaded VanillaState with VnlState alias
       const VnlState = VanillaState;
 
-      // 초기 카운터 값 표시
+      // Display initial counter value
       const count = new VnlState(0, { namespace: 'cjs-counter' });
       document.getElementById('counter-value').textContent = count.get();
 
-      // 이벤트 리스너 등록
+      // Register event listener
       count.addEventListener('change', (value) => {
         console.log('Count changed to:', value);
         document.getElementById('counter-value').textContent = value;
       });
 
-      // 버튼 이벤트 연결
+      // Connect button events
       document.getElementById('increment').addEventListener('click', () => {
-        count.set(count + 1);
+        count.set(count + 1); // Basic usage (with notification)
       });
 
       document.getElementById('decrement').addEventListener('click', () => {
-        count.set(count - 1);
+        count.set(count - 1); // Basic usage (with notification)
       });
 
-      // 예제 코드를 화면에 표시
-      document.getElementById('usage-example').textContent =
-`// CommonJS
-const VnlState = require('@uhd_kr/vanilla-state');
-
-// 기본 상태 생성
-const count = new VnlState(0);
-
-// 이벤트 리스너 추가
-count.addEventListener('change', (value) => {
-  console.log('Count changed to:', value);
-});
-
-// 상태 업데이트
-count.set(count + 1);`;
+      // Silent update button
+      document.getElementById('silent-update').addEventListener('click', () => {
+        const newValue = parseInt(document.getElementById('silent-value').value || '0', 10);
+        // Update without notification (using new API)
+        count.set(newValue, { notify: false });
+        console.log('Counter silently updated to:', newValue);
+        document.getElementById('silent-update-message').textContent = `Counter updated to ${newValue}, but UI wasn't updated (notifications disabled)`;
+      });
     });
   </script>
 </head>
@@ -250,12 +244,29 @@ count.set(count + 1);`;
 
   <div class="container">
     <div class="console-tip">
-      <strong>참고:</strong> 이 예제는 브라우저에서 CommonJS 사용 방식을 보여주기 위한 것입니다. 실제 Node.js 환경에서는 <code>require()</code>를 사용하여 모듈을 가져올 수 있습니다.
+      <strong>Note:</strong> This example demonstrates CommonJS usage in a browser. In a real Node.js environment, you would use <code>require()</code> to import the module.
     </div>
 
     <div class="card">
-      <h2>CommonJS 사용 예시</h2>
-      <pre class="code-example" id="usage-example"></pre>
+      <h2>CommonJS Usage Example</h2>
+      <pre class="code-example" id="usage-example">
+// CommonJS
+const VnlState = require('@uhd_kr/vanilla-state');
+
+// Create basic state
+const count = new VnlState(0);
+
+// Add event listener
+count.addEventListener('change', (value) => {
+  console.log('Count changed to:', value);
+});
+
+// Update state (with notification - default)
+count.set(count + 1);
+
+// Update state (without notification)
+count.set(5, { notify: false });
+      </pre>
     </div>
 
     <div class="card counter-card">
@@ -265,24 +276,52 @@ count.set(count + 1);`;
         <button id="increment">Increment</button>
         <button id="decrement">Decrement</button>
       </div>
+
+      <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e1e4e8;">
+        <h3>Update Without Notification</h3>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <input type="number" id="silent-value" placeholder="Enter value" value="42"
+            style="padding: 0.8rem; width: 100px; margin-right: 10px;">
+          <button id="silent-update">Set Without Notification</button>
+        </div>
+        <p id="silent-update-message" style="font-style: italic;"></p>
+        <p><small>When updating without notification, the state changes but listeners aren't called. Check the console.</small></p>
+      </div>
     </div>
 
     <div class="card">
-      <h2>CommonJS와 ES Module 비교</h2>
-      <p>CommonJS는 주로 Node.js 환경에서 사용되며, ES Module은 최신 브라우저와 Node.js에서 사용됩니다.</p>
+      <h2>New API: Notification Control</h2>
+      <p>The updated Vanilla State API provides control over notifications when updating state:</p>
 
-      <h3>CommonJS 특징:</h3>
+      <h3>Primitive State:</h3>
       <ul>
-        <li>동기적으로 모듈 로드</li>
-        <li><code>require()</code>와 <code>module.exports</code> 사용</li>
-        <li>Node.js에서 기본적으로 지원</li>
+        <li><code>state.set(value)</code> - Update with notification (default)</li>
+        <li><code>state.set(value, { notify: false })</code> - Update without notification</li>
       </ul>
 
-      <h3>ES Module 특징:</h3>
+      <h3>Object State:</h3>
       <ul>
-        <li>비동기 모듈 로드 지원</li>
-        <li><code>import</code>와 <code>export</code> 키워드 사용</li>
-        <li>정적 분석이 가능하여 트리 쉐이킹 최적화 지원</li>
+        <li><code>state.set('property', value)</code> - Update with notification (default)</li>
+        <li><code>state.set('property', value, { notify: false })</code> - Update without notification</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>CommonJS vs ES Module</h2>
+      <p>CommonJS is primarily used in Node.js environments, while ES Modules are used in modern browsers and Node.js.</p>
+
+      <h3>CommonJS Features:</h3>
+      <ul>
+        <li>Synchronous module loading</li>
+        <li>Uses <code>require()</code> and <code>module.exports</code></li>
+        <li>Native support in Node.js</li>
+      </ul>
+
+      <h3>ES Module Features:</h3>
+      <ul>
+        <li>Supports asynchronous module loading</li>
+        <li>Uses <code>import</code> and <code>export</code> keywords</li>
+        <li>Supports static analysis for tree-shaking optimization</li>
       </ul>
     </div>
   </div>

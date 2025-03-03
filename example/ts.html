@@ -256,93 +256,54 @@
       }
     }
   </style>
-  <!-- 먼저 라이브러리를 로드하고 나서 스크립트 실행 -->
-  <script defer src="https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.min.js"></script>
+  <!-- Load library first, then execute script -->
+  <!-- <script defer src="https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.min.js"></script> -->
+  <script defer src="../dist/vanilla-state.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 전역으로 로드된 VanillaState를 VnlState로 별칭 지정하여 사용
+      // Use the globally loaded VanillaState with VnlState alias
       const VnlState = VanillaState;
 
-      // TypeScript 코드 예시를 표시
-      document.getElementById('ts-code-example').textContent =
-`// TypeScript 타입 정의 및 예제
-import VnlState from '@uhd_kr/vanilla-state';
-
-// 타입 정의
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-// 할 일 목록 상태 생성
-const todos = new VnlState<Todo[]>([
-  { id: 1, text: 'Vanilla State 학습하기', completed: false },
-  { id: 2, text: 'TypeScript로 프로젝트 만들기', completed: false }
-]);
-
-// 카운터 상태 (숫자 타입 지정)
-const count = new VnlState<number>(0);
-
-// 사용자 상태 (객체 타입 지정)
-interface User {
-  name: string;
-  email: string;
-  isAdmin: boolean;
-}
-
-const user = new VnlState<User>({
-  name: '홍길동',
-  email: 'user@example.com',
-  isAdmin: false
-});
-
-// 이벤트 리스너 (타입 안전성 제공)
-todos.addEventListener('change', (todoList: Todo[]) => {
-  console.log('Todo list updated:', todoList);
-  renderTodos();
-});`;
-
-      // 할 일 목록 상태 관리 - 객체 대신 배열로 초기화하여 직접 관리
+      // Todo list state management - initialize with array for direct management
       let todoItems = [
-        { id: 1, text: 'Vanilla State 학습하기', completed: false },
-        { id: 2, text: 'TypeScript로 프로젝트 만들기', completed: false }
+        { id: 1, text: 'Learn Vanilla State', completed: false },
+        { id: 2, text: 'Build a project with TypeScript', completed: false }
       ];
 
       const todosState = new VnlState({ items: todoItems }, { namespace: 'todo-list' });
 
-      // 카운터 상태
+      // Counter state
       const count = new VnlState(0, { namespace: 'ts-counter' });
 
-      // DOM 요소 참조
+      // DOM element references
       const todoList = document.getElementById('todo-list');
       const todoForm = document.getElementById('todo-form');
       const todoInput = document.getElementById('todo-input');
       const counterValue = document.getElementById('counter-value');
 
-      // 할 일 목록 렌더링
+      // Render todo list
       function renderTodos() {
-        // 상태에서 items 속성을 가져옴
+        // Get items property from state
         const state = todosState.get();
         todoList.innerHTML = '';
 
-        // 템플릿 기반 렌더링을 위한 HTML 문자열 준비
+        // Prepare HTML string for template-based rendering
         const todoItemTemplate = document.getElementById('todo-item-template').innerHTML;
 
         state.items.forEach(todo => {
-          // 템플릿의 특별 식별자를 실제 데이터로 대체
+          // Replace special identifiers with actual data
           const todoHtml = todoItemTemplate
             .replace(/{{ID}}/g, todo.id)
             .replace(/{{TEXT}}/g, todo.text)
             .replace(/{{COMPLETED_CLASS}}/g, todo.completed ? 'completed' : '')
             .replace(/{{CHECKED}}/g, todo.completed ? 'checked' : '');
 
-          // HTML 문자열을 DOM 요소로 변환
+          // Convert HTML string to DOM element
           const temp = document.createElement('div');
           temp.innerHTML = todoHtml;
           const todoElement = temp.firstElementChild;
 
-          // 이벤트 리스너 연결
+          // Connect event listeners
           todoElement.querySelector('.todo-checkbox').addEventListener('change', (e) => {
             toggleTodo(todo.id);
           });
@@ -351,12 +312,12 @@ todos.addEventListener('change', (todoList: Todo[]) => {
             deleteTodo(todo.id);
           });
 
-          // 목록에 추가
+          // Add to list
           todoList.appendChild(todoElement);
         });
       }
 
-      // 할 일 추가
+      // Add todo
       function addTodo(text) {
         const state = todosState.get();
         const newItems = [...state.items, {
@@ -372,33 +333,29 @@ todos.addEventListener('change', (todoList: Todo[]) => {
         renderTodos();
       }
 
-      // 할 일 토글
+      // Toggle todo
       function toggleTodo(id) {
         const state = todosState.get();
         const newItems = state.items.map(todo =>
           todo.id === id ? { ...todo, completed: !todo.completed } : todo
         );
 
-        todosState.batch(state => {
-          state.items = newItems;
-        });
+        todosState.set('items', newItems); // Using the modified set function
 
         renderTodos();
       }
 
-      // 할 일 삭제
+      // Delete todo
       function deleteTodo(id) {
         const state = todosState.get();
         const newItems = state.items.filter(todo => todo.id !== id);
 
-        todosState.batch(state => {
-          state.items = newItems;
-        });
-
-        renderTodos();
+        // Update without notification (UI updated manually)
+        todosState.set('items', newItems, { notify: false });
+        renderTodos(); // Manually update UI
       }
 
-      // 폼 제출 핸들러
+      // Form submission handler
       todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const text = todoInput.value.trim();
@@ -409,7 +366,7 @@ todos.addEventListener('change', (todoList: Todo[]) => {
         }
       });
 
-      // 카운터 관련 이벤트 처리
+      // Counter-related event handling
       count.addEventListener('change', (value) => {
         counterValue.textContent = value;
       });
@@ -422,11 +379,11 @@ todos.addEventListener('change', (todoList: Todo[]) => {
         count.set(count - 1);
       });
 
-      // 초기 렌더링
+      // Initial rendering
       renderTodos();
       counterValue.textContent = count.get();
 
-      // 상태 변화 감지
+      // Detect state changes
       todosState.addEventListener('change', () => {
         renderTodos();
       });
@@ -449,12 +406,56 @@ todos.addEventListener('change', (todoList: Todo[]) => {
 
   <div class="container">
     <div class="console-tip">
-      <strong>참고:</strong> 이 예제는 타입스크립트 코드가 어떻게 작성되는지 보여주는 예시입니다. 실제로는 브라우저에서 컴파일된 JavaScript가 실행됩니다.
+      <strong>Note:</strong> This example shows how TypeScript code would be written. In the browser, the compiled JavaScript is actually running.
     </div>
 
     <div class="card">
-      <h2>TypeScript 코드 예시</h2>
-      <pre class="code-example" id="ts-code-example"></pre>
+      <h2>TypeScript Code Example</h2>
+      <pre class="code-example" id="ts-code-example">
+// TypeScript type definitions and example
+import VnlState from '@uhd_kr/vanilla-state';
+
+// Type definitions
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+// Create a todo list state
+const todos = new VnlState<Todo[]>([
+  { id: 1, text: 'Learn Vanilla State', completed: false },
+  { id: 2, text: 'Build a project with TypeScript', completed: false }
+]);
+
+// Counter state (with number type)
+const count = new VnlState<number>(0);
+
+// User state (with object type)
+interface User {
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
+const user = new VnlState<User>({
+  name: 'John Doe',
+  email: 'user@example.com',
+  isAdmin: false
+});
+
+// Event listener (with type safety)
+todos.addEventListener('change', (todoList: Todo[]) => {
+  console.log('Todo list updated:', todoList);
+  renderTodos();
+});
+
+// Update state without notification (object state)
+user.set('name', 'Jane Smith', { notify: false });
+
+// Update state without notification (primitive state)
+count.set(5, { notify: false });
+      </pre>
     </div>
 
     <div class="card counter-card">
@@ -464,41 +465,53 @@ todos.addEventListener('change', (todoList: Todo[]) => {
         <button id="increment">Increment</button>
         <button id="decrement">Decrement</button>
       </div>
+      <p>Changes are reflected in the UI through the <code>change</code> event.</p>
+      <p><small>Tip: Use <code>count.set(value, { notify: false })</code> to update without notifications.</small></p>
     </div>
 
     <div class="card">
       <h2>Todo List Demo</h2>
-      <p>TypeScript와 Vanilla State를 사용한 할 일 목록 예제입니다.</p>
+      <p>A todo list example using TypeScript and Vanilla State.</p>
 
       <div class="todo-container">
         <form id="todo-form" class="todo-form">
-          <input type="text" id="todo-input" placeholder="할 일 입력..." required>
-          <button type="submit">추가</button>
+          <input type="text" id="todo-input" placeholder="Enter a todo..." required>
+          <button type="submit">Add</button>
         </form>
 
         <ul id="todo-list" class="todo-list">
-          <!-- 할 일 목록이 여기에 렌더링됩니다 -->
+          <!-- Todo items will be rendered here -->
         </ul>
 
-        <!-- 할 일 항목 템플릿 -->
+        <!-- Todo item template -->
         <template id="todo-item-template">
           <li class="todo-item {{COMPLETED_CLASS}}" data-id="{{ID}}">
             <input type="checkbox" class="todo-checkbox" {{CHECKED}}>
             <span class="todo-text">{{TEXT}}</span>
-            <button class="todo-delete" style="margin-left: auto;">삭제</button>
+            <button class="todo-delete" style="margin-left: auto;">Delete</button>
           </li>
         </template>
       </div>
     </div>
 
     <div class="card">
-      <h2>TypeScript의 장점</h2>
+      <h2>TypeScript Benefits</h2>
       <ul>
-        <li><strong>타입 안전성:</strong> 컴파일 시점에 타입 오류를 잡아 런타임 에러를 방지합니다.</li>
-        <li><strong>IDE 지원:</strong> 자동 완성과 같은 개발 도구의 지원이 향상됩니다.</li>
-        <li><strong>리팩토링 용이성:</strong> 코드 변경 시 관련된 부분을 쉽게 확인할 수 있습니다.</li>
-        <li><strong>명확한 문서화:</strong> 타입 정의를 통해 코드 자체가 문서 역할을 합니다.</li>
+        <li><strong>Type Safety:</strong> Catches type errors at compile time to prevent runtime errors.</li>
+        <li><strong>IDE Support:</strong> Enhanced development tools support like autocompletion.</li>
+        <li><strong>Refactoring Ease:</strong> Easily identify related parts when making code changes.</li>
+        <li><strong>Clear Documentation:</strong> Types serve as documentation for your code.</li>
       </ul>
+    </div>
+
+    <div class="card">
+      <h2>New API: Notification Control</h2>
+      <p>Vanilla State provides options to control notifications when updating state:</p>
+      <ul>
+        <li><strong>Primitive State:</strong> <code>state.set(value, { notify: false })</code></li>
+        <li><strong>Object State:</strong> <code>state.set('propertyName', value, { notify: false })</code></li>
+      </ul>
+      <p>Disabling notifications updates the state without calling listeners, which can optimize performance.</p>
     </div>
   </div>
 

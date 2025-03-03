@@ -4,7 +4,7 @@
 
 [English](README.md) | [한국어](README.ko.md)
 
-[![npm version](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)
+[![npm version](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg?v=3.2.0)](https://www.npmjs.com/package/@uhd_kr/vanilla-state)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚨 Important: v3.2.0 Updates

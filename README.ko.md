@@ -4,19 +4,18 @@
 
 [English](README.md) | 한국어
 
-[![npm version](https://badge.fury.io/js/@uhd_kr/vanilla-state.svg)](https://badge.fury.io/js/@uhd_kr/vanilla-state)
+[![npm version](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🚨 중요: v3.1.0 업데이트
+## 🚨 중요: v3.2.0 업데이트
 
-버전 3.1.0은 안정성 개선과 성능 최적화를 포함합니다:
+버전 3.2.0은 통합 상태 업데이트 API를 제공합니다:
 
-- 프리미티브 상태 관리 안정성 개선
-- TypeScript 통합 강화
-- 이벤트 처리 및 메모리 사용 최적화
-- 디버깅 기능 개선
+- 기본값과 객체 상태 모두에서 사용 가능한 알림 제어 기능이 있는 `set` 함수 개선
+- 향상된 `set` 함수로 대체하기 위한 `setWithoutNotify` 함수 사용 중단(deprecated)
+- 파라미터 검증 및 에러 메시지 개선
 
-v2.x에서 업데이트하는 경우, v3.0.0의 중요한 API 변경사항은 [마이그레이션 가이드](docs/MIGRATION.md)를 참조하세요.
+v3.1.0 이전 버전에서 업데이트하는 경우, API 변경 사항에 대해서는 [마이그레이션 가이드](docs/MIGRATION.md)를 참조하세요.
 
 ## 주요 기능
 
@@ -69,7 +68,7 @@ import VnlState from '@uhd_kr/vanilla-state';
 // 객체 상태 관리
 const state = new VnlState({
   name: 'Vanilla State',
-  version: '3.0.0'
+  version: '3.2.0'
 });
 
 // 상태 리스너 추가 - v3.0.0 새로운 API
@@ -108,10 +107,14 @@ count.set(count + 1); // 숫자 값으로 이벤트 발생
 
 ### 고급 사용법
 
-#### 무음 업데이트
+#### 무음 업데이트 (v3.2.0 신규)
 리스너를 실행하지 않고 상태 업데이트:
 ```javascript
-state.setWithoutNotify('count', 2);
+// 객체 상태
+state.set('count', 2, { notify: false });
+
+// 기본값 상태
+count.set(5, { notify: false });
 ```
 
 #### 일괄 업데이트
@@ -176,11 +179,11 @@ state.items = [...state.items, newItem];
 state.items.push(newItem); // 리스너가 실행되지 않음
 ```
 
-3. **무음 업데이트**: 여러 업데이트를 일괄 처리할 때는 `setWithoutNotify`를 사용하세요:
+3. **무음 업데이트**: 여러 업데이트를 일괄 처리할 때는 `set` 함수의 `notify` 옵션을 사용하세요:
 ```javascript
-state.setWithoutNotify('loading', true);
-state.setWithoutNotify('data', newData);
-state.loading = false; // 이 업데이트만 리스너 실행
+state.set('loading', true, { notify: false });
+state.set('data', newData, { notify: false });
+state.set('loading', false); // 이 업데이트만 리스너 실행
 ```
 
 ## 개발

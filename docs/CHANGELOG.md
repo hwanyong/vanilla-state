@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.2.0] - 2025-03-10
+
+### Added
+- Unified state update API with notification control
+- New `set` function that supports optional notification control for both primitive and object states
+
+### Changed
+- Deprecated `setWithoutNotify` in favor of the enhanced `set` function
+- Improved parameter validation in state update functions
+- Enhanced error messages for incorrect API usage
+
+### Migration
+```javascript
+// Old API - deprecated
+state.setWithoutNotify('count', 5);
+
+// New API - preferred
+state.set('count', 5, { notify: false }); // Object state
+count.set(5, { notify: false }); // Primitive state
+```
+
 ## [3.1.0] - 2025-03-03
 
 ### Added

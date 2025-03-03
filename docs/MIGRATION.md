@@ -10,6 +10,70 @@ If you encounter any issues during migration:
 3. Review the [CHANGELOG.md](../docs/CHANGELOG.md)
 4. Open an issue on our [GitHub repository](https://github.com/hwanyong/vanilla-state/issues)
 
+## Migrating from v3.1.0 to v3.2.0
+
+Version 3.2.0 introduces a unified state update API that provides more consistent control over notifications.
+
+### API Changes in v3.2.0
+
+1. **Unified `set` Function**
+   - The `set` function now supports notification control via options parameter
+   - Works consistently for both primitive and object states
+   - Replaces the need for separate `setWithoutNotify` function
+
+2. **Parameter Validation**
+   - Enhanced error checking for function parameters
+   - Clear error messages when API is used incorrectly
+
+### Migration Steps
+
+1. **Replace `setWithoutNotify` with the new `set` API**
+   ```javascript
+   // Before (v3.1.0 and earlier)
+   state.setWithoutNotify('count', 5);
+
+   // After (v3.2.0)
+   state.set('count', 5, { notify: false });
+   ```
+
+2. **Update primitive state silent updates**
+   ```javascript
+   // Before (v3.1.0 and earlier)
+   // No direct way to update primitive state without notification
+
+   // After (v3.2.0)
+   count.set(5, { notify: false });
+   ```
+
+3. **Use the more explicit API for better code readability**
+   ```javascript
+   // Object state updates
+   state.set('name', 'John'); // With notification (default)
+   state.set('name', 'John', { notify: false }); // Without notification
+
+   // Primitive state updates
+   count.set(5); // With notification (default)
+   count.set(5, { notify: false }); // Without notification
+   ```
+
+### Using TypeScript with the New API
+
+```typescript
+// Enhanced type safety
+interface User {
+  name: string;
+  age: number;
+}
+
+// Object state
+const state = new VnlState<User>({ name: 'John', age: 30 });
+state.set('age', 31, { notify: false });
+
+// Primitive state
+const count = new VnlState<number>(0);
+count.set(5, { notify: false });
+```
+
 ## Migrating from v3.0.0 to v3.1.0
 
 Version 3.1.0 introduces performance improvements and stability enhancements with no breaking changes.

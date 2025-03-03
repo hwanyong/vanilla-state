@@ -4,19 +4,18 @@
 
 [English](README.md) | [한국어](README.ko.md)
 
-[![npm version](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state)
+[![npm version](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)](https://badge.fury.io/js/@uhd_kr%2Fvanilla-state.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🚨 Important: v3.1.0 Updates
+## 🚨 Important: v3.2.0 Updates
 
-Version 3.1.0 includes stability improvements and performance optimizations:
+Version 3.2.0 introduces a unified state update API:
 
-- Improved stability for primitive state management
-- Enhanced TypeScript integration
-- Optimized event handling and memory usage
-- Refined debugging capabilities
+- New `set` function with notification control for both primitive and object states
+- Deprecated `setWithoutNotify` in favor of the enhanced `set` function with options
+- Improved parameter validation and error messages
 
-For those updating from v2.x, please refer to the [Migration Guide](docs/MIGRATION.md) for important API changes in v3.0.0.
+For those updating from v3.1.0 or earlier, please refer to the [Migration Guide](docs/MIGRATION.md) for API changes.
 
 ## Features
 
@@ -69,7 +68,7 @@ import VnlState from '@uhd_kr/vanilla-state';
 // Object state management
 const state = new VnlState({
   name: 'Vanilla State',
-  version: '3.0.0'
+  version: '3.2.0'
 });
 
 // Add state listener - new v3.0.0 API
@@ -108,10 +107,14 @@ count.set(count + 1); // Triggers event with number value
 
 ### Advanced Usage
 
-#### Silent Updates
+#### Silent Updates (New in v3.2.0)
 Update state without triggering listeners:
 ```javascript
-state.setWithoutNotify('count', 2);
+// Object state
+state.set('count', 2, { notify: false });
+
+// Primitive state
+count.set(5, { notify: false });
 ```
 
 #### Batch Updates
@@ -119,8 +122,6 @@ Group multiple state updates and trigger listeners only once at the end:
 ```javascript
 state.batch((s) => {
   s.count = 1;
-  s.loading = true;
-  s.user.name = "John";
   s.user.role = "Admin";
 });
 // All listeners will be notified only once after all updates are complete
@@ -209,10 +210,10 @@ state.items = [...state.items, newItem];
 state.items.push(newItem); // Won't trigger listeners
 ```
 
-3. **Silent Updates**: Use `setWithoutNotify` when batching multiple updates:
+3. **Silent Updates**: Use `set` with `{ notify: false }` when batching multiple updates:
 ```javascript
-state.setWithoutNotify('loading', true);
-state.setWithoutNotify('data', newData);
+state.set('loading', true, { notify: false });
+state.set('data', newData, { notify: false });
 state.loading = false; // Only this update triggers listeners
 ```
 

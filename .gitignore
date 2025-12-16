@@ -1,3 +1,4 @@
 .DS_Store
 .prettierrc
 /node_modules
+.mcp-debug-tools/config.json

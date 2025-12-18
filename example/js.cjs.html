@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vanilla State - CommonJS Example</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
-  <meta name="keywords" content="vanilla state, CommonJS, CJS, state management, event listeners, Node.js, browser, JavaScript, web development">
+  <meta name="description"
+    content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
+  <meta name="keywords"
+    content="vanilla state, CommonJS, CJS, state management, event listeners, Node.js, browser, JavaScript, web development">
   <meta name="author" content="Hwanyong Yoo (UHD)">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vanilla-state.dev/js.cjs.html">
   <meta property="og:title" content="Vanilla State - CommonJS Example">
-  <meta property="og:description" content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="og:description"
+    content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
+  <meta property="og:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://vanilla-state.dev/js.cjs.html">
   <meta property="twitter:title" content="Vanilla State - CommonJS Example">
-  <meta property="twitter:description" content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
-  <meta property="twitter:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="twitter:description"
+    content="Learn how to use Vanilla State with CommonJS. This example demonstrates state management with event listeners and object state in Node.js and browser environments.">
+  <meta property="twitter:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://vanilla-state.dev/js.cjs.html">
@@ -32,161 +39,221 @@
 
   <style>
     :root {
-      --primary-color: #09122C;
-      --secondary-color: #872341;
-      --accent-color: #BE3144;
-      --highlight-color: #E17564;
-      --text-color: #333;
-      --background-color: #f8f9fa;
-      --card-bg: #fff;
-      --border-color: #e1e4e8;
-      --code-bg: #f1f1f1;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #8b5cf6;
+      --bg-dark: #0a0a0c;
+      --bg-card: #16161a;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+      --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       line-height: 1.6;
-      color: var(--text-color);
-      background-color: var(--background-color);
+      color: var(--text-main);
+      background-color: var(--bg-dark);
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 1rem 2rem;
+      padding: 0 2rem;
     }
 
+    /* Header */
     header {
-      text-align: center;
-      padding: 1.5rem 0;
-      margin-bottom: 2rem;
-      background-color: var(--primary-color);
-      color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--glass-border);
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     header h1 {
-      font-size: 2.2rem;
-      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      margin: 0;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
     }
 
-    header p {
-      opacity: 0.9;
-      margin: 0;
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .nav-links {
-      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
     }
 
     .nav-links a {
-      color: white;
-      margin: 0 0.5rem;
+      color: var(--text-muted);
       text-decoration: none;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      transition: all 0.2s;
+      font-size: 0.9rem;
+      transition: color 0.3s;
     }
 
-    .nav-links a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
+    .nav-links a:hover,
     .nav-links a.active {
-      background-color: rgba(255, 255, 255, 0.3);
+      color: var(--text-main);
+    }
+
+    /* Main Content */
+    .hero-mini {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+
+    .hero-mini h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-mini p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
     }
 
     .card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
     }
 
     .card h2 {
-      color: var(--accent-color);
+      font-size: 1.5rem;
       margin-top: 0;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.8rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
     }
 
     .counter-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      text-align: center;
+      padding: 3rem;
     }
 
     .counter-value {
-      font-size: 3rem;
-      font-weight: bold;
-      color: var(--highlight-color);
-      margin: 1rem 0;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 1.5rem 0;
+      font-variant-numeric: tabular-nums;
     }
 
     .button-group {
       display: flex;
       gap: 1rem;
-      margin-bottom: 1rem;
+      justify-content: center;
     }
 
     button {
-      background-color: var(--accent-color);
-      color: white;
-      border: none;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
       padding: 0.8rem 1.5rem;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
     }
 
     button:hover {
-      background-color: var(--secondary-color);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
     }
 
-    button:active {
-      transform: translateY(1px);
+    button.primary {
+      background: var(--gradient);
+      border: none;
     }
 
-    .code-example {
-      background-color: var(--code-bg);
-      padding: 1.5rem;
+    button.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+    }
+
+    input[type="number"] {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 0.8rem;
       border-radius: 8px;
-      overflow-x: auto;
-      font-family: 'Courier New', Courier, monospace;
-      margin-bottom: 2rem;
+      width: 100px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
     }
 
     .console-tip {
-      background-color: #fff3cd;
-      border-left: 4px solid var(--highlight-color);
-      padding: 1rem;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      padding: 1.5rem;
       margin-bottom: 2rem;
-      border-radius: 4px;
+      border-radius: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
+    .console-tip strong {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      color: #9cdcfe;
+    }
+
+    pre {
+      background: #0d0d0f;
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
     footer {
+      padding: 4rem 0;
       text-align: center;
-      padding: 2rem 0;
-      background-color: var(--primary-color);
-      color: white;
-      margin-top: 3rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
     footer a {
-      color: white;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .button-group {
-        flex-direction: column;
-      }
+      color: var(--text-main);
+      text-decoration: none;
     }
   </style>
   <!-- Load library first, then execute script -->
@@ -230,109 +297,92 @@
     });
   </script>
 </head>
+
 <body>
   <header>
-    <div class="container">
+    <div class="container header-content">
       <h1>Vanilla State</h1>
-      <p>CommonJS Example</p>
-      <div class="nav-links">
+      <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="js.esm.html">ES Module</a>
         <a href="js.cjs.html" class="active">CommonJS</a>
         <a href="ts.html">TypeScript</a>
-      </div>
+      </nav>
     </div>
   </header>
 
   <div class="container">
+    <div class="hero-mini">
+      <h2>CommonJS Example</h2>
+      <p>Seamless integration with Node.js and legacy environments</p>
+    </div>
+
     <div class="console-tip">
-      <strong>Note:</strong> This example demonstrates CommonJS usage in a browser. In a real Node.js environment, you would use <code>require()</code> to import the module.
+      <strong>Note:</strong> This example demonstrates CommonJS usage in a browser. In Node.js, you would use
+      <code>require('@uhd_kr/vanilla-state')</code>.
     </div>
 
     <div class="card">
-      <h2>CommonJS Usage Example</h2>
-      <pre class="code-example" id="usage-example">
-// CommonJS
+      <h2>Implementation</h2>
+      <pre><code>// CommonJS Import
 const VnlState = require('@uhd_kr/vanilla-state');
 
-// Create basic state
 const count = new VnlState(0);
-
-// Add event listener
 count.addEventListener('change', (value) => {
-  console.log('Count changed to:', value);
+  console.log('Count:', value);
 });
 
-// Update state (with notification - default)
-count.set(count + 1);
-
-// Update state (without notification)
-count.set(5, { notify: false });
-      </pre>
+count.set(5); // Basic usage
+count.set(10, { notify: false }); // Silent</code></pre>
     </div>
 
     <div class="card counter-card">
       <h2>Counter Demo</h2>
       <div class="counter-value" id="counter-value">0</div>
       <div class="button-group">
-        <button id="increment">Increment</button>
+        <button id="increment" class="primary">Increment</button>
         <button id="decrement">Decrement</button>
       </div>
 
-      <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e1e4e8;">
-        <h3>Update Without Notification</h3>
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-          <input type="number" id="silent-value" placeholder="Enter value" value="42"
-            style="padding: 0.8rem; width: 100px; margin-right: 10px;">
+      <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--glass-border);">
+        <h3 style="color: var(--primary); margin-bottom: 1.5rem;">Silent Update</h3>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem;">
+          <input type="number" id="silent-value" value="42">
           <button id="silent-update">Set Without Notification</button>
         </div>
-        <p id="silent-update-message" style="font-style: italic;"></p>
-        <p><small>When updating without notification, the state changes but listeners aren't called. Check the console.</small></p>
+        <p id="silent-update-message"
+          style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem; font-style: italic;"></p>
       </div>
     </div>
 
     <div class="card">
-      <h2>New API: Notification Control</h2>
-      <p>The updated Vanilla State API provides control over notifications when updating state:</p>
-
-      <h3>Primitive State:</h3>
-      <ul>
-        <li><code>state.set(value)</code> - Update with notification (default)</li>
-        <li><code>state.set(value, { notify: false })</code> - Update without notification</li>
-      </ul>
-
-      <h3>Object State:</h3>
-      <ul>
-        <li><code>state.set('property', value)</code> - Update with notification (default)</li>
-        <li><code>state.set('property', value, { notify: false })</code> - Update without notification</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>CommonJS vs ES Module</h2>
-      <p>CommonJS is primarily used in Node.js environments, while ES Modules are used in modern browsers and Node.js.</p>
-
-      <h3>CommonJS Features:</h3>
-      <ul>
-        <li>Synchronous module loading</li>
-        <li>Uses <code>require()</code> and <code>module.exports</code></li>
-        <li>Native support in Node.js</li>
-      </ul>
-
-      <h3>ES Module Features:</h3>
-      <ul>
-        <li>Supports asynchronous module loading</li>
-        <li>Uses <code>import</code> and <code>export</code> keywords</li>
-        <li>Supports static analysis for tree-shaking optimization</li>
-      </ul>
+      <h2>Key Differences</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <h3 style="color: var(--primary);">CommonJS</h3>
+          <ul style="color: var(--text-muted); padding-left: 1.5rem; font-size: 0.9rem;">
+            <li>Synchronous loading</li>
+            <li><code>require()</code> based</li>
+            <li>Native Node.js support</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color: var(--primary);">ES Module</h3>
+          <ul style="color: var(--text-muted); padding-left: 1.5rem; font-size: 0.9rem;">
+            <li>Static analysis support</li>
+            <li><code>import</code> based</li>
+            <li>Modern browser standard</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
   <footer>
     <div class="container">
-      <p>Built with <a href="https://github.com/hwanyong/vanilla-state">Vanilla State</a> - A lightweight state management library</p>
+      <p>Built with <a href="https://github.com/hwanyong/vanilla-state">Vanilla State</a></p>
       <p>© 2023-2025 Hwanyong Yoo (UHD)</p>
     </div>
   </footer>
 </body>
-</html>
+```

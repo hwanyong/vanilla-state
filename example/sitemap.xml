@@ -4,7 +4,7 @@
   <!-- 메인 페이지 (영문) -->
   <url>
     <loc>https://hwanyong.github.io/vanilla-state/</loc>
-    <lastmod>2024-03-02</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://hwanyong.github.io/vanilla-state/index.ko.html"/>
@@ -14,7 +14,7 @@
   <!-- 메인 페이지 (한국어) -->
   <url>
     <loc>https://hwanyong.github.io/vanilla-state/index.ko.html</loc>
-    <lastmod>2024-03-02</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://hwanyong.github.io/vanilla-state/"/>
@@ -24,7 +24,7 @@
   <!-- TypeScript 예제 페이지 -->
   <url>
     <loc>https://hwanyong.github.io/vanilla-state/ts.html</loc>
-    <lastmod>2024-03-02</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -32,7 +32,7 @@
   <!-- ES Module 예제 페이지 -->
   <url>
     <loc>https://hwanyong.github.io/vanilla-state/js.esm.html</loc>
-    <lastmod>2024-03-02</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -40,7 +40,7 @@
   <!-- CommonJS 예제 페이지 -->
   <url>
     <loc>https://hwanyong.github.io/vanilla-state/js.cjs.html</loc>
-    <lastmod>2024-03-02</lastmod>
+    <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

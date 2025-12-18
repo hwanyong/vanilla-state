@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vanilla State - ES Module Example</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
-  <meta name="keywords" content="vanilla state, ES Modules, ESM, state management, event listeners, batch updates, custom events, JavaScript, web development">
+  <meta name="description"
+    content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
+  <meta name="keywords"
+    content="vanilla state, ES Modules, ESM, state management, event listeners, batch updates, custom events, JavaScript, web development">
   <meta name="author" content="Hwanyong Yoo (UHD)">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://hwanyong.github.io/vanilla-state/js.esm.html">
   <meta property="og:title" content="Vanilla State - ES Module Example">
-  <meta property="og:description" content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="og:description"
+    content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
+  <meta property="og:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://hwanyong.github.io/vanilla-state/js.esm.html">
   <meta property="twitter:title" content="Vanilla State - ES Module Example">
-  <meta property="twitter:description" content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
-  <meta property="twitter:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="twitter:description"
+    content="Learn how to use Vanilla State with ES Modules. This example demonstrates state management with event listeners, batch updates, and custom events in modern JavaScript.">
+  <meta property="twitter:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://hwanyong.github.io/vanilla-state/js.esm.html">
@@ -32,194 +39,240 @@
 
   <style>
     :root {
-      --primary-color: #09122C;
-      --secondary-color: #872341;
-      --accent-color: #BE3144;
-      --highlight-color: #E17564;
-      --text-color: #333;
-      --background-color: #f8f9fa;
-      --card-bg: #fff;
-      --border-color: #e1e4e8;
-      --code-bg: #f1f1f1;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent: #8b5cf6;
+      --bg-dark: #0a0a0c;
+      --bg-card: #16161a;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+      --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       line-height: 1.6;
-      color: var(--text-color);
-      background-color: var(--background-color);
+      color: var(--text-main);
+      background-color: var(--bg-dark);
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 1rem 2rem;
+      padding: 0 2rem;
     }
 
+    /* Header */
     header {
-      text-align: center;
-      padding: 1.5rem 0;
-      margin-bottom: 2rem;
-      background-color: var(--primary-color);
-      color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--glass-border);
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     header h1 {
-      font-size: 2.2rem;
-      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      margin: 0;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
     }
 
-    header p {
-      opacity: 0.9;
-      margin: 0;
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .nav-links {
-      margin-top: 1rem;
+      display: flex;
+      gap: 1.5rem;
     }
 
     .nav-links a {
-      color: white;
-      margin: 0 0.5rem;
+      color: var(--text-muted);
       text-decoration: none;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      transition: all 0.2s;
+      font-size: 0.9rem;
+      transition: color 0.3s;
     }
 
-    .nav-links a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
+    .nav-links a:hover,
     .nav-links a.active {
-      background-color: rgba(255, 255, 255, 0.3);
+      color: var(--text-main);
+    }
+
+    /* Main Content */
+    .hero-mini {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+
+    .hero-mini h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-mini p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
     }
 
     .card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
     }
 
     .card h2 {
-      color: var(--accent-color);
+      font-size: 1.5rem;
       margin-top: 0;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.8rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
     }
 
     .counter-card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      text-align: center;
+      padding: 3rem;
     }
 
     .counter-value {
-      font-size: 3rem;
-      font-weight: bold;
-      color: var(--highlight-color);
-      margin: 1rem 0;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 1.5rem 0;
+      font-variant-numeric: tabular-nums;
     }
 
     .button-group {
       display: flex;
       gap: 1rem;
-      margin-bottom: 1rem;
+      justify-content: center;
     }
 
     button {
-      background-color: var(--accent-color);
-      color: white;
-      border: none;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
       padding: 0.8rem 1.5rem;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
     }
 
     button:hover {
-      background-color: var(--secondary-color);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
     }
 
-    button:active {
-      transform: translateY(1px);
+    button.primary {
+      background: var(--gradient);
+      border: none;
     }
 
-    .custom-event-card {
-      text-align: center;
+    button.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
     }
 
     #custom-event-output {
-      font-style: italic;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-family: monospace;
     }
 
-    form {
-      display: grid;
-      grid-gap: 1rem;
-    }
-
+    /* Forms */
     .form-group {
-      display: flex;
-      flex-direction: column;
+      margin-bottom: 1.5rem;
     }
 
     label {
+      display: block;
       margin-bottom: 0.5rem;
-      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
-    input {
-      padding: 0.6rem;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      font-size: 1rem;
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 0.8rem;
+      border-radius: 8px;
+      box-sizing: border-box;
     }
 
     input:focus {
       outline: none;
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 2px rgba(190, 49, 68, 0.3);
-    }
-
-    .submit-button {
-      margin-top: 1rem;
-      justify-self: start;
+      border-color: var(--primary);
     }
 
     .console-tip {
-      background-color: #fff3cd;
-      border-left: 4px solid var(--highlight-color);
-      padding: 1rem;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      padding: 1.5rem;
       margin-bottom: 2rem;
-      border-radius: 4px;
+      border-radius: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
+    .console-tip strong {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      color: #9cdcfe;
+    }
+
+    pre {
+      background: #0d0d0f;
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* Footer */
     footer {
+      padding: 4rem 0;
       text-align: center;
-      padding: 2rem 0;
-      background-color: var(--primary-color);
-      color: white;
-      margin-top: 3rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
     footer a {
-      color: white;
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .button-group {
-        flex-direction: column;
-      }
+      color: var(--text-main);
+      text-decoration: none;
     }
   </style>
   <script type="module">
@@ -418,129 +471,126 @@
     });
   </script>
 </head>
+
 <body>
   <header>
-    <div class="container">
+    <div class="container header-content">
       <h1>Vanilla State</h1>
-      <p>ES Module Example</p>
-      <div class="nav-links">
+      <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="js.esm.html" class="active">ES Module</a>
         <a href="js.cjs.html">CommonJS</a>
         <a href="ts.html">TypeScript</a>
-      </div>
+      </nav>
     </div>
   </header>
 
   <div class="container">
+    <div class="hero-mini">
+      <h2>ES Module Example</h2>
+      <p>Modern browser usage with full reactivity</p>
+    </div>
+
     <div class="console-tip">
-      <strong>Tip:</strong> Open your browser console (F12 or Ctrl+Shift+J) to see the state changes and namespace information.
+      <strong>Tip:</strong> Open your browser console (F12) to see the state changes and namespace information.
     </div>
 
     <div class="card counter-card">
-      <h2>Counter Demo</h2>
+      <h2 style="text-align: center;">Counter Demo</h2>
       <div class="counter-value" id="counter-value">0</div>
       <div class="button-group">
-        <button id="increment">Increment</button>
+        <button id="increment" class="primary">Increment</button>
         <button id="decrement">Decrement</button>
       </div>
     </div>
 
     <div class="card">
-      <h2>Notification Control API Test</h2>
-      <p>Use the new set function API to control notifications.</p>
+      <h2>Notification Control</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Control event dispatch with the
+        <code>{ notify: false }</code> option.
+      </p>
 
-      <h3>1. Primitive State</h3>
-      <div style="margin-bottom: 1rem;">
-        <input type="number" id="primitive-value" placeholder="Number value" value="42" style="padding: 0.5rem; width: 100px;">
-        <label style="margin-left: 1rem;">
-          <input type="checkbox" id="primitive-notify"> Disable notifications
-        </label>
-        <button id="test-primitive-notify" style="margin-left: 1rem;">Update</button>
+      <div class="form-group">
+        <label>1. Primitive State</label>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <input type="number" id="primitive-value" value="42" style="max-width: 150px;">
+          <label style="margin: 0; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="primitive-notify"> Silent Update
+          </label>
+          <button id="test-primitive-notify">Update</button>
+        </div>
+        <div id="primitive-test-result" style="font-size: 0.9rem; color: var(--primary); margin-top: 0.5rem;"></div>
       </div>
-      <div id="primitive-test-result" style="font-style: italic; margin-top: 0.5rem; color: #666;"></div>
 
-      <h3>2. Object State</h3>
-      <div style="margin-bottom: 1rem;">
-        <input type="text" id="object-property" placeholder="Property name" value="name" style="padding: 0.5rem; width: 100px;">
-        <input type="text" id="object-value" placeholder="Value" value="Test Value" style="padding: 0.5rem; width: 150px; margin-left: 0.5rem;">
-        <label style="margin-left: 1rem;">
-          <input type="checkbox" id="object-notify"> Disable notifications
-        </label>
-        <button id="test-object-notify" style="margin-left: 1rem;">Update</button>
+      <div class="form-group" style="margin-top: 2rem;">
+        <label>2. Object State</label>
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="object-property" value="name" style="max-width: 120px;">
+          <input type="text" id="object-value" value="Test Value" style="max-width: 180px;">
+          <label style="margin: 0; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="object-notify"> Silent Update
+          </label>
+          <button id="test-object-notify">Update</button>
+        </div>
+        <div id="object-test-result" style="font-size: 0.9rem; color: var(--primary); margin-top: 0.5rem;"></div>
       </div>
-      <div id="object-test-result" style="font-style: italic; margin-top: 0.5rem; color: #666;"></div>
     </div>
 
-    <div class="card custom-event-card">
+    <div class="card" style="text-align: center;">
       <h2>Custom Events</h2>
-      <p>Custom events can be emitted and received regardless of state changes.</p>
-      <button id="custom-event">Trigger Custom Event</button>
-      <p id="custom-event-output">No events yet</p>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Emit and receive events independent of state changes.
+      </p>
+      <button id="custom-event" class="primary">Trigger Custom Event</button>
+      <p id="custom-event-output">Waiting for event...</p>
     </div>
 
     <div class="card">
-      <h2>Update State Info</h2>
-      <p>This form demonstrates using batch updates to modify multiple properties at once.</p>
+      <h2>Batch Updates</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem;">Demonstrating multiple property updates with a single
+        notification.</p>
       <form>
         <div class="form-group">
-          <label for="name">Name:</label>
+          <label>Name</label>
           <input type="text" id="name" name="name" value="Vanilla State">
         </div>
         <div class="form-group">
-          <label for="version">Version:</label>
+          <label>Version</label>
           <input type="text" id="version" name="version" value="1.0.0">
         </div>
         <div class="form-group">
-          <label for="description">Description:</label>
+          <label>Description</label>
           <input type="text" id="description" name="description" value="A simple state management library">
         </div>
-        <button type="submit" class="submit-button">Update State</button>
+        <button type="submit" class="primary" style="width: 100%;">Update State</button>
       </form>
     </div>
 
     <div class="card">
       <h2>Namespace Feature</h2>
-      <p>This example demonstrates how Vanilla State uses namespaces to isolate event listeners:</p>
-      <ol>
-        <li>Setting an explicit namespace: <code>new VnlState(0, { namespace: 'counter' })</code></li>
-        <li>Auto-generated namespace (debug mode): <code>new VnlState(obj, { debug: true })</code></li>
-        <li>Individual primitive states with auto namespaces</li>
-        <li>Object with explicit namespace: <code>new VnlState(obj, { namespace: 'state2' })</code></li>
-      </ol>
-      <p>Check the console log to see namespace information and event isolation in action.</p>
+      <p style="color: var(--text-muted);">Isolate state events using namespaces for complex applications.</p>
+      <ul style="color: var(--text-muted); padding-left: 1.5rem;">
+        <li>Explicit: <code>{ namespace: 'counter' }</code></li>
+        <li>Auto: <code>{ debug: true }</code></li>
+      </ul>
     </div>
 
     <div class="card">
-      <h2>New API Features</h2>
-      <p>The updated Vanilla State API provides the following features:</p>
-      <ul>
-        <li><strong>Unified set API:</strong> Consistent usage across both object and primitive states</li>
-        <li><strong>Notification control:</strong> Control event dispatch with <code>{ notify: false }</code> option</li>
-        <li><strong>Type safety:</strong> Clear error messages when parameters are used incorrectly</li>
-      </ul>
-
-      <h3>Example Code:</h3>
-      <pre style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow: auto;">
-// Primitive State
+      <h2>Implementation Snippet</h2>
+      <pre><code>// Primitive State
 const count = new VnlState(0);
-count.set(5);                     // Basic usage (with notification)
-count.set(10, { notify: false }); // Update without notification
+count.set(5); // Basic usage
+count.set(10, { notify: false }); // Silent
 
 // Object State
-const user = new VnlState({ name: 'John Doe', age: 30 });
-user.set('name', 'Jane Smith');                  // Basic usage (with notification)
-user.set('age', 31, { notify: false });          // Update without notification
-      </pre>
+const user = new VnlState({ name: 'John' });
+user.set('name', 'Jane'); // Basic usage</code></pre>
     </div>
-
   </div>
 
   <footer>
     <div class="container">
-      <p>Built with <a href="https://github.com/hwanyong/vanilla-state">Vanilla State</a> - A lightweight state management library</p>
+      <p>Built with <a href="https://github.com/hwanyong/vanilla-state">Vanilla State</a></p>
       <p>© 2023-2025 Hwanyong Yoo (UHD)</p>
     </div>
   </footer>
 </body>
-</html>

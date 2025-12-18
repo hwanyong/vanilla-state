@@ -1,276 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla State - Lightweight State Management Library</title>
+  <title>Vanilla State | Lightweight Proxy-based State Management</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Vanilla State is a lightweight, proxy-based state management solution for modern web applications with zero dependencies. Perfect for React, Vue, Angular, or plain JavaScript.">
-  <meta name="keywords" content="vanilla state, state management, JavaScript, TypeScript, proxy-based, reactive, web development, frontend">
+  <meta name="description"
+    content="Vanilla State is a ultra-lightweight (zero-dependency) proxy-based state management solution. Experience reactive updates with the simplicity of plain JavaScript objects.">
+  <meta name="keywords"
+    content="vanilla state, state management, reactive js, javascript proxy, lightweight state, zero dependency, typescript state management">
   <meta name="author" content="Hwanyong Yoo (UHD)">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://hwanyong.github.io/vanilla-state/">
-  <meta property="og:title" content="Vanilla State - Lightweight State Management Library">
-  <meta property="og:description" content="A lightweight, proxy-based state management solution with zero dependencies. Perfect for modern web applications.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="og:title" content="Vanilla State | Performance-First State Management">
+  <meta property="og:description"
+    content="Ultra-lightweight proxy-based state management. Zero dependencies, maximum performance.">
+  <meta property="og:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://hwanyong.github.io/vanilla-state/">
-  <meta property="twitter:title" content="Vanilla State - Lightweight State Management Library">
-  <meta property="twitter:description" content="A lightweight, proxy-based state management solution with zero dependencies. Perfect for modern web applications.">
-  <meta property="twitter:image" content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
+  <meta property="twitter:title" content="Vanilla State | Performance-First State Management">
+  <meta property="twitter:description"
+    content="Ultra-lightweight proxy-based state management. Zero dependencies, maximum performance.">
+  <meta property="twitter:image"
+    content="https://raw.githubusercontent.com/hwanyong/vanilla-state/main/docs/assets/logo.png">
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://hwanyong.github.io/vanilla-state/">
   <link rel="alternate" hreflang="en" href="https://hwanyong.github.io/vanilla-state/">
   <link rel="alternate" hreflang="ko" href="https://hwanyong.github.io/vanilla-state/index.ko.html">
 
-  <!-- Sitemap -->
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vanilla State",
+    "description": "Ultra-lightweight proxy-based state management for modern JavaScript applications.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "url": "https://hwanyong.github.io/vanilla-state/",
+    "author": {
+      "@type": "Person",
+      "name": "Hwanyong Yoo (UHD)"
+    },
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@700;800&display=swap"
+    rel="stylesheet">
 
   <style>
     :root {
-      --primary-color: #09122C;
-      --secondary-color: #872341;
-      --accent-color: #BE3144;
-      --highlight-color: #E17564;
-      --text-color: #333;
-      --background-color: #f8f9fa;
-      --card-bg: #fff;
-      --border-color: #e1e4e8;
+      --bg-dark: #050505;
+      --bg-card: #111111;
+      --text-main: #ffffff;
+      --text-muted: #a1a1aa;
+      --primary: #6366f1;
+      --secondary: #d946ef;
+      --accent: #8b5cf6;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      color: var(--text-color);
-      background-color: var(--background-color);
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
     .container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 0 1.5rem;
     }
 
-    header {
+    /* Navbar */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5, 5, 5, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem 0;
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .lang-toggle {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.3s;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 8rem 0 4rem;
       text-align: center;
-      padding: 2rem 0;
-      background-color: var(--primary-color);
-      color: white;
-
-      & h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-      }
-      & p {
-        font-size: 1.2rem;
-        opacity: 0.9;
-      }
+      position: relative;
     }
 
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      z-index: -1;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      background: var(--glass);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Demo Section */
+    .demo-section {
+      padding: 4rem 0;
+    }
+
+    .demo-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .demo-preview {
+      background: var(--bg-dark);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      text-align: center;
+    }
+
+    .demo-preview h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .count-display {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .demo-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    code {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+      background: #1e1e1e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      display: block;
+      color: #9cdcfe;
+      overflow-x: auto;
+    }
+
+    /* Features */
     .features {
+      padding: 6rem 0;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
-      margin: 3rem 0;
     }
 
     .feature-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 2rem;
+      border-radius: 16px;
+      transition: transform 0.3s;
     }
 
     .feature-card:hover {
       transform: translateY(-5px);
+      border-color: var(--accent);
     }
 
     .feature-card h3 {
-      color: var(--accent-color);
-      margin-top: 0;
+      color: var(--primary);
+      margin-bottom: 1rem;
     }
 
-    .cta-section {
-      text-align: center;
-      margin: 3rem 0;
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
     }
 
-    .btn {
-      display: inline-block;
-      background-color: var(--accent-color);
-      color: white;
-      padding: 0.8rem 1.5rem;
+    /* Integration Examples Cards */
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .example-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 2.5rem;
+      border-radius: 20px;
       text-decoration: none;
-      border-radius: 4px;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-      margin: 0.5rem;
-    }
-
-    .btn:hover {
-      background-color: var(--secondary-color);
-    }
-
-    .examples {
-      margin: 3rem 0;
-    }
-
-    .example-links {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .example-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 0;
+    }
+
+    .example-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+    }
+
+    .example-card:hover::before {
+      opacity: 0.05;
+    }
+
+    .example-card>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .example-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .example-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+    }
+
+    .example-card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
     }
 
     .example-link {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      padding: 1rem;
-      text-decoration: none;
-      color: var(--accent-color);
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .example-link:hover {
-      background-color: var(--primary-color);
-      color: white;
-    }
-
+    /* Footer */
     footer {
+      padding: 4rem 0;
+      border-top: 1px solid var(--glass-border);
       text-align: center;
-      padding: 2rem 0;
-      background-color: var(--primary-color);
-      color: white;
-      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
-    .footer-links a {
-      color: white;
-      margin: 0 1rem;
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    footer a {
+      color: var(--text-muted);
       text-decoration: none;
     }
 
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
-
-    code {
-      background-color: #f1f1f1;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-family: 'Courier New', Courier, monospace;
-    }
-
-    pre {
-      background-color: #f1f1f1;
-      padding: 1rem;
-      border-radius: 4px;
-      overflow-x: auto;
+    footer a:hover {
+      color: var(--text-main);
     }
 
     @media (max-width: 768px) {
-      .features {
+      .demo-card {
         grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
       }
     }
   </style>
 </head>
+
 <body>
-  <header>
+
+  <nav>
     <div class="container">
-      <h1>Vanilla State</h1>
-      <p>Lightweight State Management for Vanilla JavaScript</p>
-      <div style="margin-top: 20px;">
-        <a href="index.html" class="btn" style="background-color: var(--secondary-color);">English</a>
-        <a href="index.ko.html" class="btn">한국어</a>
+      <a href="#" class="logo">Vanilla State</a>
+      <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#features">Features</a>
+        <a href="https://github.com/hwanyong/vanilla-state">Docs</a>
+        <a href="index.ko.html" class="lang-toggle">한국어</a>
       </div>
     </div>
-  </header>
+  </nav>
 
-  <div class="container">
-    <section class="intro">
-      <h2>What is Vanilla State?</h2>
-      <p>Vanilla State is a lightweight state management solution for modern web applications. It provides proxy-based reactivity to maintain clean code while enabling effective state management.</p>
-    </section>
-
-    <section class="features">
-      <div class="feature-card">
-        <h3>Lightweight & Fast</h3>
-        <p>Designed with zero dependencies, resulting in a very small bundle size.</p>
-      </div>
-      <div class="feature-card">
-        <h3>Proxy-based Reactivity</h3>
-        <p>Utilizes JavaScript Proxies for efficient state detection and update systems.</p>
-      </div>
-      <div class="feature-card">
-        <h3>Framework Agnostic</h3>
-        <p>Can be used with any framework including React, Vue, Angular, or plain JavaScript.</p>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>State Management,<br>Reinvented.</h1>
+        <p>A ultra-lightweight, proxy-based state management solution for modern JavaScript applications. Zero
+          dependencies, maximum performance.</p>
+        <div class="btn-group">
+          <a href="https://github.com/hwanyong/vanilla-state" class="btn btn-primary">Get Started</a>
+          <a href="https://www.npmjs.com/package/@uhd_kr/vanilla-state" class="btn btn-outline">NPM Install</a>
+        </div>
       </div>
     </section>
 
-    <section class="installation">
-      <h2>Installation</h2>
-      <pre><code>npm install @uhd_kr/vanilla-state</code></pre>
-      <p>or</p>
-      <pre><code>pnpm add @uhd_kr/vanilla-state</code></pre>
-    </section>
-
-    <section class="usage"></section>
-      <h2>Usage</h2>
-      <pre><code>// ESM
-import VnlState from '@uhd_kr/vanilla-state';
-
-// Create a basic state
-const count = new VnlState(0);
-
-// Add event listener
-count.addEventListener('change', (value) => {
-  console.log('Count changed to:', value);
-});
-
-// Update state
+    <section id="demo" class="demo-section">
+      <div class="container">
+        <div class="demo-card">
+          <div class="demo-preview">
+            <h3>Live Demo</h3>
+            <div id="count-value" class="count-display">0</div>
+            <div class="btn-group" style="margin-top: 1.5rem;">
+              <button id="decrement" class="btn btn-outline">-</button>
+              <button id="increment" class="btn btn-primary">Increment</button>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+              Updates are reactive and immediate.
+            </p>
+          </div>
+          <div class="demo-controls">
+            <h3>Pure Simplicity</h3>
+            <p style="color: var(--text-muted);">Reactive state without the boilerplate. Just wrap your object and
+              subscribe to changes.</p>
+            <code>
+const count = new VnlState(0);<br><br>
+count.addEventListener('change', (val) => {<br>
+&nbsp;&nbsp;el.innerText = val;<br>
+});<br><br>
+// Triggered on increment!<br>
 count.set(count + 1);
-</code></pre>
-    </section>
-
-    <section class="examples">
-      <h2>Examples</h2>
-      <p>Check out various use cases:</p>
-      <div class="example-links">
-        <a href="js.esm.html" class="example-link">ES Module Example</a>
-        <a href="js.cjs.html" class="example-link">CommonJS Example</a>
-        <a href="ts.html" class="example-link">TypeScript Example</a>
+            </code>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="cta-section">
-      <h2>Get Started Today!</h2>
-      <p>Experience cleaner, more maintainable state management with Vanilla State.</p>
-      <a href="https://github.com/hwanyong/vanilla-state" class="btn">GitHub Repository</a>
-      <a href="https://www.npmjs.com/package/@uhd_kr/vanilla-state" class="btn">NPM Package</a>
+    <section id="features" class="container features">
+      <div class="feature-card">
+        <h3>🚀 Lightweight</h3>
+        <p>Zero dependencies. Minified and Gzipped to under 2KB. Performance is the priority.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔄 Proxy-based</h3>
+        <p>Leverages native ES6 Proxies for efficient change detection. No virtual DOM, no overhead.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🎯 Framework Agnostic</h3>
+        <p>Use it with React, Vue, Angular, or simple Vanilla JS projects. Integrates seamlessly anywhere.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📦 TypeScript First</h3>
+        <p>Built-in type definitions for a superior developer experience and total type safety.</p>
+      </div>
     </section>
-  </div>
+
+    <!-- Restored Examples Section -->
+    <section id="examples" class="container" style="padding: 6rem 0;">
+      <h2
+        style="text-align: center; margin-bottom: 3rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2.5rem;">
+        Integration Examples</h2>
+      <div class="example-grid">
+        <a href="js.esm.html" class="example-card">
+          <div class="example-icon">📦</div>
+          <h3>ES Module</h3>
+          <p>Native browser integration for modern web apps.</p>
+          <span class="example-link">View Example →</span>
+        </a>
+        <a href="js.cjs.html" class="example-card">
+          <div class="example-icon">🛠️</div>
+          <h3>CommonJS</h3>
+          <p>Seamless integration with Node.js and legacy bundlers.</p>
+          <span class="example-link">View Example →</span>
+        </a>
+        <a href="ts.html" class="example-card">
+          <div class="example-icon">🛡️</div>
+          <h3>TypeScript</h3>
+          <p>Leverage full type safety and superior IDE support.</p>
+          <span class="example-link">View Example →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="container" style="padding: 4rem 0; text-align: center;">
+      <h2 style="margin-bottom: 2rem;">Ready to simplify your state?</h2>
+      <pre
+        style="display: inline-block; text-align: left; background: var(--bg-card); padding: 1rem 2rem; border-radius: 8px; border: 1px solid var(--glass-border);"><code>npm install @uhd_kr/vanilla-state</code></pre>
+    </section>
+  </main>
 
   <footer>
     <div class="container">
-      <p>© 2023-2025 Hwanyong Yoo (UHD) - MIT License</p>
+      <p>© 2023-2025 Hwanyong Yoo (UHD) | Released under MIT License</p>
       <div class="footer-links">
         <a href="https://github.com/hwanyong/vanilla-state">GitHub</a>
-        <a href="https://github.com/hwanyong/vanilla-state/issues">Issues</a>
         <a href="https://www.npmjs.com/package/@uhd_kr/vanilla-state">NPM</a>
+        <a href="https://github.com/hwanyong/vanilla-state/issues">Issues</a>
       </div>
     </div>
   </footer>
+
+  <!-- Script for Demo - Fixed with CDN -->
+  <script type="module">
+    import VnlState from 'https://unpkg.com/@uhd_kr/vanilla-state/dist/vanilla-state.esm.js'
+
+    const count = new VnlState(0)
+    const display = document.getElementById('count-value')
+    const incBtn = document.getElementById('increment')
+    const decBtn = document.getElementById('decrement')
+
+    count.addEventListener('change', (val) => {
+      display.innerText = val
+      // Add a small scale animation
+      display.style.transform = 'scale(1.1)'
+      setTimeout(() => display.style.transform = 'scale(1)', 100)
+    })
+
+    display.style.transition = 'transform 0.1s ease'
+
+    incBtn.addEventListener('click', () => count.set(count + 1))
+    decBtn.addEventListener('click', () => count.set(count - 1))
+  </script>
 </body>
+
 </html>

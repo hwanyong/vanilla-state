@@ -66,6 +66,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
+  "packageManager": "pnpm@11.5.2",
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
     "@rollup/plugin-terser": "^0.4.4",

@@ -99,9 +99,8 @@ jobs:
 
       # 6) pnpm 설치
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
           run_install: false
 
       # 7) pnpm 캐시 디렉토리 추출

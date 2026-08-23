@@ -68,11 +68,11 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
-    "@rollup/plugin-terser": "latest",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.13.5",
     "prettier": "^3.5.2",
-    "rollup": "latest",
+    "rollup": "^4.34.8",
     "tslib": "^2.8.1",
     "typescript": "^5.7.3"
   },

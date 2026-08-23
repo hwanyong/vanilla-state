@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap location
-Sitemap: https://hwanyong.github.io/vanilla-state/sitemap.xml

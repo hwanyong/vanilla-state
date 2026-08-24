@@ -3,27 +3,27 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <!-- 메인 페이지 (영문) -->
   <url>
-    <loc>https://blog.hwanyong.com/vanilla-state/</loc>
+    <loc>https://lab.hwanyong.com/vanilla-state/</loc>
     <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://blog.hwanyong.com/vanilla-state/index.ko.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://blog.hwanyong.com/vanilla-state/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://lab.hwanyong.com/vanilla-state/index.ko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.hwanyong.com/vanilla-state/"/>
   </url>
 
   <!-- 메인 페이지 (한국어) -->
   <url>
-    <loc>https://blog.hwanyong.com/vanilla-state/index.ko.html</loc>
+    <loc>https://lab.hwanyong.com/vanilla-state/index.ko.html</loc>
     <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://blog.hwanyong.com/vanilla-state/"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://blog.hwanyong.com/vanilla-state/index.ko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lab.hwanyong.com/vanilla-state/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://lab.hwanyong.com/vanilla-state/index.ko.html"/>
   </url>
 
   <!-- TypeScript 예제 페이지 -->
   <url>
-    <loc>https://blog.hwanyong.com/vanilla-state/ts.html</loc>
+    <loc>https://lab.hwanyong.com/vanilla-state/ts.html</loc>
     <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -31,7 +31,7 @@
 
   <!-- ES Module 예제 페이지 -->
   <url>
-    <loc>https://blog.hwanyong.com/vanilla-state/js.esm.html</loc>
+    <loc>https://lab.hwanyong.com/vanilla-state/js.esm.html</loc>
     <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -39,7 +39,7 @@
 
   <!-- CommonJS 예제 페이지 -->
   <url>
-    <loc>https://blog.hwanyong.com/vanilla-state/js.cjs.html</loc>
+    <loc>https://lab.hwanyong.com/vanilla-state/js.cjs.html</loc>
     <lastmod>2025-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

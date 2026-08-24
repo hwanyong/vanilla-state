@@ -97,6 +97,10 @@ jobs:
           mkdir -p out/vanilla-state
           cp -R website/. out/vanilla-state/
           cp cloudflare/_headers out/_headers
+          # ★ _redirects 도 함께 올린다. html_handling="none" 이라 디렉터리 색인이
+          #   자동으로 잡히지 않고, 이 파일의 200 재작성이 그것을 잇는다.
+          #   빠뜨리면 /<repo>/ 가 404 가 된다(실제로 그렇게 나갔다).
+          cp cloudflare/_redirects out/_redirects
       - uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

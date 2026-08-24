@@ -64,6 +64,11 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist/website'
+      # Cloudflare 잡이 같은 산출물을 쓴다 — 빌드를 두 번 하지 않기 위해 함께 올린다.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: ./dist/website
 
   deploy:
     environment:
@@ -75,3 +80,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # ── Cloudflare Workers (lab.hwanyong.com) ────────────────────────────────
+  # ★ 선행 조건: 저장소 시크릿 CLOUDFLARE_API_TOKEN · CLOUDFLARE_ACCOUNT_ID.
+  cloudflare:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: website
+      - name: Arrange assets under the served path
+        run: |
+          mkdir -p out/vanilla-state
+          cp -R website/. out/vanilla-state/
+          cp cloudflare/_headers out/_headers
+      - uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

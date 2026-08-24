@@ -2,3 +2,9 @@
 .prettierrc
 /node_modules
 .mcp-debug-tools/config.json
+
+# Cloudflare 배포용 임시 산출물
+# 배포 워크플로가 만드는 임시 묶음(example + 빌드 산출물). dist/ 자체는 추적한다.
+dist/website/
+out/
+.wrangler/

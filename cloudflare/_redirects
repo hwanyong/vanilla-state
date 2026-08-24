@@ -1,0 +1,7 @@
+# 디렉터리 색인을 손으로 잇는다.
+#
+# html_handling="none" 을 쓰는 이유는 wrangler.toml 에 적어 두었다(색인된 .html
+# 주소를 지키기 위해서다). 그 대가로 /vanilla-state/ 가 index.html 을 자동으로
+# 찾지 못하므로 여기서 잇는다. ★상태 코드가 200★ 이라 리다이렉트가 아니라
+# 그 자리에서 파일을 내보낸다 — 주소가 바뀌지 않는다.
+/vanilla-state/  /vanilla-state/index.html  200

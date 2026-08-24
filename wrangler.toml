@@ -1,0 +1,22 @@
+# wrangler.toml — Cloudflare Workers 정적 자산 배포.
+#
+# GitHub Pages 와 ★함께★ 나간다. 런칭 전까지 blog.hwanyong.com/vanilla-state/ 가
+# 살아 있어야 하므로 deploy-pages.yml 의 Pages 배포는 그대로 둔다.
+#
+# ★ 산출물(dist/website)을 out/vanilla-state/ 로 한 겹 옮겨 담는다 — Worker 의 정적
+#   자산은 루트 기준이라 그대로 올리면 /vanilla-state/ 요청과 맞지 않는다.
+name = "vanilla-state"
+compatibility_date = "2026-08-23"
+
+[assets]
+directory = "./out"
+not_found_handling = "404-page"
+# ★ "none" 이다(다른 저장소의 기본값과 다르다). 기본값 auto-trailing-slash 는
+#   /x.html 요청을 /x 로 307 리다이렉트하는데, 이 사이트는 sitemap 에 .html 주소를
+#   4개 싣고 있다(index.ko.html · ts.html · js.esm.html · js.cjs.html). 색인된 주소가
+#   통째로 리다이렉트가 되는 셈이라, GitHub Pages 와 같은 동작(그대로 200)을 유지한다.
+html_handling = "none"
+
+[[routes]]
+pattern = "lab.hwanyong.com/vanilla-state/*"
+zone_name = "hwanyong.com"

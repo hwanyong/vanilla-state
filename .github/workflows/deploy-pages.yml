@@ -1,4 +1,14 @@
-name: Deploy to GitHub Pages
+name: Deploy
+
+# 랜딩 페이지를 https://lab.hwanyong.com/vanilla-state/ 로 배포한다.
+#
+# ★ 한때 GitHub Pages 로도 나갔다(blog.hwanyong.com/vanilla-state/). 2026-08-25 에 그 잡을
+#   지웠다 — 그 도메인은 이제 Cloudflare 가 서빙하고, 옛 경로는 Worker 가 lab 으로
+#   301 한다. Pages 로 올려 봐야 아무도 읽지 않는 산출물이었다.
+#   저장소 설정의 Pages 도 같은 날 껐다.
+#
+# ★ 되돌릴 곳이 없다. 이 잡이 실패하면 사이트는 ★직전 배포에 머문다★ —
+#   내려가지는 않지만 새 내용이 나가지 않는다. 실패를 방치하면 조용히 낡는다.
 
 on:
   push:
@@ -6,13 +16,13 @@ on:
       - main
   workflow_dispatch:
 
+# 저장소를 읽는 것뿐이다. Pages 잡을 지우면서 그 잡이 쓰던 쓰기 권한도 함께 걷었다 —
+# 쓰지 않는 쓰기 권한을 남겨 두면 워크플로를 뺏겼을 때 넘겨줄 것이 그만큼 늘어난다.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
+  group: "deploy"
   cancel-in-progress: false
 
 jobs:
@@ -51,37 +61,22 @@ jobs:
       - name: Build library
         run: pnpm build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
       - name: Build website
         run: |
           mkdir -p dist/website
           cp -r example/* dist/website/
           cp dist/vanilla-state.min.js dist/website/
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist/website'
-      # Cloudflare 잡이 같은 산출물을 쓴다 — 빌드를 두 번 하지 않기 위해 함께 올린다.
+      # ★ 한때 Pages 전용 업로드 액션이 여기 하나 더 있었다. 그것이 만드는 것은
+      #   ★GitHub Pages 전용 형식★ 이라 Cloudflare 잡이 그대로 내려받을 수 없어
+      #   일반 아티팩트를 한 벌 더 올려야 했다. Pages 를 버린 뒤로는 이 한 벌뿐이다.
       - uses: actions/upload-artifact@v4
         with:
           name: website
           path: ./dist/website
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
   # ── Cloudflare Workers (lab.hwanyong.com) ────────────────────────────────
+  # ★이 잡이 유일한 배포다.★
   # ★ 선행 조건: 저장소 시크릿 CLOUDFLARE_API_TOKEN · CLOUDFLARE_ACCOUNT_ID.
   cloudflare:
     needs: build
